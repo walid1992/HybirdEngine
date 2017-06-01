@@ -1,4 +1,4 @@
-package com.github.lzyzsd.jsbridge.example;
+package com.github.walid.jsbridge.example;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.Button;
 
-import com.github.lzyzsd.jsbridge.BridgeHandler;
-import com.github.lzyzsd.jsbridge.BridgeWebView;
-import com.github.lzyzsd.jsbridge.CallBackFunction;
-import com.github.lzyzsd.jsbridge.DefaultHandler;
+import com.github.walid.jsbridge.BridgeHandler;
+import com.github.walid.jsbridge.BridgeWebView;
+import com.github.walid.jsbridge.CallBackFunction;
+import com.github.walid.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
 
 public class MainActivity extends Activity implements OnClickListener {

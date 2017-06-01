@@ -1,4 +1,4 @@
-package com.github.lzyzsd.jsbridge;
+package com.github.walid.jsbridge;
 
 import android.graphics.Bitmap;
 import android.webkit.WebView;

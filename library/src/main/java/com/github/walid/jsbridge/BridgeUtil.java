@@ -1,7 +1,6 @@
-package com.github.lzyzsd.jsbridge;
+package com.github.walid.jsbridge;
 
 import android.content.Context;
-import android.util.Base64;
 import android.webkit.WebView;
 
 import java.io.BufferedReader;

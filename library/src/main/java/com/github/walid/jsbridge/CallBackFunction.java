@@ -1,4 +1,4 @@
-package com.github.lzyzsd.jsbridge;
+package com.github.walid.jsbridge;
 
 public interface CallBackFunction {
 	
