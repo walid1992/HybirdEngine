@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.walid.library">
+    package="com.walid.jsbridge">
 
     <application
         android:allowBackup="true"

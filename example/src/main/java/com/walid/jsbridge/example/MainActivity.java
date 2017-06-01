@@ -1,39 +1,27 @@
 package com.walid.jsbridge.example;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.widget.Button;
 
-import com.walid.jsbridge.BridgeHandler;
-import com.walid.jsbridge.BridgeWebView;
-import com.walid.jsbridge.CallBackFunction;
-import com.walid.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
+import com.walid.jsbridge.BridgeWebView;
+import com.walid.jsbridge.IBridgeHandler;
+import com.walid.jsbridge.ICallBackFunction;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 
     private final String TAG = "MainActivity";
+    private BridgeWebView webView;
 
-    BridgeWebView webView;
-
-    Button button;
-
-    int RESULT_CODE = 0;
-
-    ValueCallback<Uri> mUploadMessage;
-
-    static class Location {
+    private static class Location {
         String address;
     }
 
-    static class User {
+    private static class User {
         String name;
         Location location;
         String testStr;
@@ -45,36 +33,23 @@ public class MainActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);
 
         webView = (BridgeWebView) findViewById(R.id.webView);
-
-        button = (Button) findViewById(R.id.button);
-
-        button.setOnClickListener(this);
-
-        webView.setDefaultHandler(new DefaultHandler());
-
-        webView.setWebChromeClient(new WebChromeClient() {
-
-            @SuppressWarnings("unused")
-            public void openFileChooser(ValueCallback<Uri> uploadMsg, String AcceptType, String capture) {
-                this.openFileChooser(uploadMsg);
-            }
-
-            @SuppressWarnings("unused")
-            public void openFileChooser(ValueCallback<Uri> uploadMsg, String AcceptType) {
-                this.openFileChooser(uploadMsg);
-            }
-
-            public void openFileChooser(ValueCallback<Uri> uploadMsg) {
-                mUploadMessage = uploadMsg;
-                pickFile();
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.dispatch("functionInJs", "data from Java", new ICallBackFunction() {
+                    @Override
+                    public void onCallBack(String data) {
+                        Log.i(TAG, "reponse data from js " + data);
+                    }
+                });
             }
         });
-
         webView.loadUrl("file:///android_asset/demo.html");
 
-        webView.registerHandler("submitFromWeb", new BridgeHandler() {
+        webView.register("submitFromWeb", new IBridgeHandler() {
             @Override
-            public void handler(String data, CallBackFunction function) {
+            public void handler(String data, ICallBackFunction function) {
                 Log.i(TAG, "handler = submitFromWeb, data from web = " + data);
                 function.onCallBack("submitFromWeb exe, response data 中文 from Java");
             }
@@ -85,46 +60,12 @@ public class MainActivity extends Activity implements OnClickListener {
         location.address = "SDU";
         user.location = location;
         user.name = "大头鬼";
-
-        webView.callHandler("functionInJs", new Gson().toJson(user), new CallBackFunction() {
+        webView.dispatch("functionInJs", new Gson().toJson(user), new ICallBackFunction() {
             @Override
             public void onCallBack(String data) {
-
+                Log.d(TAG, "handler = functionInJs, data from web = " + data);
             }
         });
-        webView.send("hello");
-    }
-
-    public void pickFile() {
-        Intent chooserIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        chooserIntent.setType("image/*");
-        startActivityForResult(chooserIntent, RESULT_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == RESULT_CODE) {
-            if (null == mUploadMessage) {
-                return;
-            }
-            Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
-            mUploadMessage.onReceiveValue(result);
-            mUploadMessage = null;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (button.equals(v)) {
-            webView.callHandler("functionInJs", "data from Java", new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    // TODO Auto-generated method stub
-                    Log.i(TAG, "reponse data from js " + data);
-                }
-            });
-        }
-
     }
 
 }

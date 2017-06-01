@@ -8,9 +8,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
- * Created by bruce on 10/28/15.
+ * @Author : walid
+ * @Data : 2017-06-01  15:05
+ * @Describe :
  */
 public class BridgeWebViewClient extends WebViewClient {
+
     private BridgeWebView webView;
 
     public BridgeWebViewClient(BridgeWebView webView) {
@@ -25,10 +28,11 @@ public class BridgeWebViewClient extends WebViewClient {
             e.printStackTrace();
         }
 
-        if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) { // 如果是返回数据
+        // 如果是返回数据
+        if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) {
             webView.handlerReturnData(url);
             return true;
-        } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) { //
+        } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) {
             webView.flushMessageQueue();
             return true;
         } else {
@@ -44,12 +48,7 @@ public class BridgeWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-
-        if (BridgeWebView.toLoadJs != null) {
-            BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.toLoadJs);
-        }
-
-        //
+        BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.LOCAL_JSFile);
         if (webView.getStartupMessage() != null) {
             for (Message m : webView.getStartupMessage()) {
                 webView.dispatchMessage(m);
