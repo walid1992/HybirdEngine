@@ -1,4 +1,4 @@
-package com.github.walid.jsbridge;
+package com.walid.jsbridge;
 
 public class DefaultHandler implements BridgeHandler{
 

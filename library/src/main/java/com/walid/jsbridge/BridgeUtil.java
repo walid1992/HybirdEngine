@@ -1,4 +1,4 @@
-package com.github.walid.jsbridge;
+package com.walid.jsbridge;
 
 import android.content.Context;
 import android.webkit.WebView;

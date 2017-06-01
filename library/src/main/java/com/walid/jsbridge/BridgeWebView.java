@@ -1,4 +1,4 @@
-package com.github.walid.jsbridge;
+package com.walid.jsbridge;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.github.walid.jsbridge;
+package com.walid.jsbridge;
 
 import org.json.JSONArray;
 import org.json.JSONException;

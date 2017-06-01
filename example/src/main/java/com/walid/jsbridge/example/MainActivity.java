@@ -1,4 +1,4 @@
-package com.github.walid.jsbridge.example;
+package com.walid.jsbridge.example;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.Button;
 
-import com.github.walid.jsbridge.BridgeHandler;
-import com.github.walid.jsbridge.BridgeWebView;
-import com.github.walid.jsbridge.CallBackFunction;
-import com.github.walid.jsbridge.DefaultHandler;
+import com.walid.jsbridge.BridgeHandler;
+import com.walid.jsbridge.BridgeWebView;
+import com.walid.jsbridge.CallBackFunction;
+import com.walid.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -92,9 +92,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
             }
         });
-
         webView.send("hello");
-
     }
 
     public void pickFile() {
@@ -119,13 +117,11 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         if (button.equals(v)) {
             webView.callHandler("functionInJs", "data from Java", new CallBackFunction() {
-
                 @Override
                 public void onCallBack(String data) {
                     // TODO Auto-generated method stub
                     Log.i(TAG, "reponse data from js " + data);
                 }
-
             });
         }
 
