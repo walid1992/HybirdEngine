@@ -57,11 +57,6 @@
   }
 
   function testClick1() {
-    window.AEJSBridge.register("functionInJs", function (params, responseCallback) {
-      document.getElementById("show").innerHTML = "params from Java: = " + params;
-      let responseData = "Javascript Says Right back aka!";
-      responseCallback(responseData);
-    });
     //call native method
     window.AEJSBridge.dispatch({
       eventName: 'submitFromWeb',
@@ -79,6 +74,11 @@
     };
     console.log('JS responding with', params);
     responseCallback(params);
+  });
+  window.AEJSBridge.register("functionInJs", function (params, responseCallback) {
+    document.getElementById("show").innerHTML = "params from Java: = " + params;
+    let responseData = "Javascript Says Right back aka!";
+    responseCallback(responseData);
   });
 </script>
 
