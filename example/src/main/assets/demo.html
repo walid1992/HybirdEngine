@@ -45,6 +45,14 @@
   }
 
   function testClick() {
+    window.AEJSBridge.register({
+      eventName: 'functionInJs',
+      callback: function (params, responseCallback) {
+      document.getElementById("show").innerHTML = "params from Java: = " + params;
+      let responseData = "Javascript Says Right back aka!";
+      responseCallback(responseData);
+      }
+    });
     //send message to native
     let params = {id: 1, content: "这是一个图片 <img src=\"a.png\"/> test\r\nhahaha"};
     window.AEJSBridge.dispatch({
@@ -74,11 +82,6 @@
     };
     console.log('JS responding with', params);
     responseCallback(params);
-  });
-  window.AEJSBridge.register("functionInJs", function (params, responseCallback) {
-    document.getElementById("show").innerHTML = "params from Java: = " + params;
-    let responseData = "Javascript Says Right back aka!";
-    responseCallback(responseData);
   });
 </script>
 
