@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
                 });
             }
         });
+
         webView.loadUrl("file:///android_asset/demo.html");
 
         webView.register("submitFromWeb", new IBridgeHandler() {
