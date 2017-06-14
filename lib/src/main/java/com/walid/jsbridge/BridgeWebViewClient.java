@@ -8,15 +8,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
- * @Author : walid
- * @Data : 2017-06-01  15:05
- * @Describe :
+ * Author : walid
+ * Data : 2017-06-01  15:05
+ * Describe :
  */
 public class BridgeWebViewClient extends WebViewClient {
 
     private BridgeWebView webView;
 
-    public BridgeWebViewClient(BridgeWebView webView) {
+    protected BridgeWebViewClient(BridgeWebView webView) {
         this.webView = webView;
     }
 
@@ -28,12 +28,12 @@ public class BridgeWebViewClient extends WebViewClient {
             e.printStackTrace();
         }
 
-        // 如果是返回数据
+        // if return data
         if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) {
-            webView.handlerReturnData(url);
+            webView.handleJsMessageData(url);
             return true;
         } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) {
-            webView.flushMessageQueue();
+            webView.queryJsMessageQueue();
             return true;
         } else {
             return super.shouldOverrideUrlLoading(view, url);
@@ -49,11 +49,11 @@ public class BridgeWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.LOCAL_JSFile);
-        if (webView.getStartupMessage() != null) {
-            for (Message m : webView.getStartupMessage()) {
+        if (webView.getStartupMsgs() != null) {
+            for (Message m : webView.getStartupMsgs()) {
                 webView.dispatchMessage(m);
             }
-            webView.setStartupMessage(null);
+            webView.setStartupMsgs(null);
         }
     }
 

@@ -1,73 +1,56 @@
 <html>
 <head>
-  <meta content="text/html; charset=utf-8" http-equiv="content-type">
-  <title>
-    js调用java
-  </title>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>
+        js调用java
+    </title>
 </head>
 
 <body>
+<div>
+    <xmp id="show"></xmp>
+</div>
 <p>
-  <xmp id="show">
-  </xmp>
+    <input type="button" id="enter1" value="添加 event 事件" onclick="addEvent();"/>
 </p>
 <p>
-  <xmp id="init">
-  </xmp>
+    <input type="button" id="enter2" value="移除 event 事件" onclick="removeEvent();"/>
 </p>
 <p>
-  <input type="text" id="text1" value="用户名(username)"/>
+    <input type="button" id="enter3" value="分发事件" onclick="dispatch();"/>
 </p>
 <p>
-  <input type="text" id="text2" value="password"/>
-</p>
-<p>
-  <input type="button" id="enter" value="发消息给Native" onclick="testClick();"
-  />
-</p>
-<p>
-  <input type="button" id="enter1" value="调用Native方法" onclick="testClick1();"
-  />
-</p>
-<p>
-  <input type="button" id="enter2" value="显示html" onclick="testDiv();"/>
-</p>
-<p>
-  <input type="file" value="打开文件"/>
+    <input type="button" id="enter4" value="显示html" onclick="showHtml();"/>
 </p>
 </body>
 
-<script src="./JsBridgeUtils.js"></script>
-
 <script>
-  function testDiv() {
+  function showHtml() {
     document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
   }
 
-  function testClick() {
-    window.AEJSBridge.register({
-      eventName: 'functionInJs',
-      callback: function (params, responseCallback) {
-      document.getElementById("show").innerHTML = "params from Java: = " + params;
-      let responseData = "Javascript Says Right back aka!";
-      responseCallback(responseData);
-      }
-    });
-    //send message to native
-    let params = {id: 1, content: "这是一个图片 <img src=\"a.png\"/> test\r\nhahaha"};
-    window.AEJSBridge.dispatch({
-      eventName: 'submitFromWeb',
-      params: {'param': '中文测试'},
-      callback: function (responseData) {
-        document.getElementById("show").innerHTML = "repsonseData from java, params = " + responseData
-      }
+  var func = function (res) {
+    document.getElementById("show").innerHTML = "params from Java: = " + res;
+  }
+
+  function addEvent() {
+    window.AEJSBridge.addEventListener({
+      handlerName: 'functionInJs',
+      callback: func
     });
   }
 
-  function testClick1() {
+  function removeEvent() {
+    window.AEJSBridge.removeEventListener({
+      handlerName: 'functionInJs',
+      execFunc: func
+    });
+  }
+
+  function dispatch() {
     //call native method
     window.AEJSBridge.dispatch({
-      eventName: 'submitFromWeb',
+      handlerName: 'submitFromWeb',
       params: {'param': '中文测试'},
       callback: function (responseData) {
         document.getElementById("show").innerHTML = "send get responseData from java, params = " + responseData
@@ -75,14 +58,6 @@
     });
   }
 
-  window.AEJSBridge.init(function (message, responseCallback) {
-    console.log('JS got a message', message);
-    let params = {
-      'Javascript Responds': '测试中文!'
-    };
-    console.log('JS responding with', params);
-    responseCallback(params);
-  });
 </script>
 
 </html>

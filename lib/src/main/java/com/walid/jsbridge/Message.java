@@ -8,23 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author : walid
- * @Data : 2017-06-01  15:05
- * @Describe :
+ * Author : walid
+ * Data : 2017-06-01  15:05
+ * Describe :
  */
-public class Message {
+class Message {
 
     private String callbackId; // callbackId
     private String responseId; // responseId
-    private String responseData; // responseData
-    private String eventName; // 事件名称
+    private String data; // data
+    private String handlerName; // 事件名称
     private String params; // 事件参数
+    private int code = 0; // 状态码
+    private String msg; // 消息
 
     private final static String CALLBACK_ID = "callbackId";
     private final static String RESPONSE_ID = "responseId";
-    private final static String RESPONSE_DATA = "responseData";
+    private final static String DATA = "data";
     private final static String PARAMS = "params";
-    private final static String EVENT_NAME = "eventName";
+    private final static String HANDLER_NAME = "handlerName";
+    private final static String CODE = "code";
+    private final static String MSG = "msg";
 
     public String getResponseId() {
         return responseId;
@@ -34,12 +38,12 @@ public class Message {
         this.responseId = responseId;
     }
 
-    public String getResponseData() {
-        return responseData;
+    public String getData() {
+        return data;
     }
 
-    public void setResponseData(String responseData) {
-        this.responseData = responseData;
+    public void setData(String data) {
+        this.data = data;
     }
 
     public String getCallbackId() {
@@ -58,22 +62,40 @@ public class Message {
         this.params = params;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getHandlerName() {
+        return handlerName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setHandlerName(String handlerName) {
+        this.handlerName = handlerName;
     }
 
-    public String toJson() {
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    String toJson() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(CALLBACK_ID, getCallbackId());
-            jsonObject.put(PARAMS, getParams());
-            jsonObject.put(EVENT_NAME, getEventName());
-            jsonObject.put(RESPONSE_DATA, getResponseData());
-            jsonObject.put(RESPONSE_ID, getResponseId());
+            jsonObject.put(CALLBACK_ID, callbackId);
+            jsonObject.put(PARAMS, params);
+            jsonObject.put(HANDLER_NAME, handlerName);
+            jsonObject.put(DATA, data);
+            jsonObject.put(CODE, code);
+            jsonObject.put(MSG, msg);
+            jsonObject.put(RESPONSE_ID, responseId);
             return jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -81,13 +103,13 @@ public class Message {
         return null;
     }
 
-    public static Message toObject(String jsonStr) {
+    static Message toObject(String jsonStr) {
         Message m = new Message();
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            m.setEventName(jsonObject.has(EVENT_NAME) ? jsonObject.getString(EVENT_NAME) : null);
+            m.setHandlerName(jsonObject.has(HANDLER_NAME) ? jsonObject.getString(HANDLER_NAME) : null);
             m.setCallbackId(jsonObject.has(CALLBACK_ID) ? jsonObject.getString(CALLBACK_ID) : null);
-            m.setResponseData(jsonObject.has(RESPONSE_DATA) ? jsonObject.getString(RESPONSE_DATA) : null);
+            m.setData(jsonObject.has(DATA) ? jsonObject.getString(DATA) : null);
             m.setResponseId(jsonObject.has(RESPONSE_ID) ? jsonObject.getString(RESPONSE_ID) : null);
             m.setParams(jsonObject.has(PARAMS) ? jsonObject.getString(PARAMS) : null);
             return m;
@@ -97,16 +119,16 @@ public class Message {
         return m;
     }
 
-    public static List<Message> toArrayList(String jsonStr) {
+    static List<Message> toArrayList(String jsonStr) {
         List<Message> list = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(jsonStr);
             for (int i = 0; i < jsonArray.length(); i++) {
                 Message m = new Message();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                m.setEventName(jsonObject.has(EVENT_NAME) ? jsonObject.getString(EVENT_NAME) : null);
+                m.setHandlerName(jsonObject.has(HANDLER_NAME) ? jsonObject.getString(HANDLER_NAME) : null);
                 m.setCallbackId(jsonObject.has(CALLBACK_ID) ? jsonObject.getString(CALLBACK_ID) : null);
-                m.setResponseData(jsonObject.has(RESPONSE_DATA) ? jsonObject.getString(RESPONSE_DATA) : null);
+                m.setData(jsonObject.has(DATA) ? jsonObject.getString(DATA) : null);
                 m.setResponseId(jsonObject.has(RESPONSE_ID) ? jsonObject.getString(RESPONSE_ID) : null);
                 m.setParams(jsonObject.has(PARAMS) ? jsonObject.getString(PARAMS) : null);
                 list.add(m);

@@ -9,13 +9,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * @Author : walid
- * @Data : 2017-06-01  15:05
- * @Describe :
+ * User : walid
+ * Author : 2017-06-01  15:05
+ * Describe :
  */
 public class BridgeUtil {
+
     final static String YY_OVERRIDE_SCHEMA = "yy://";
-    final static String YY_RETURN_DATA = YY_OVERRIDE_SCHEMA + "return/";//格式为   yy://return/{function}/returncontent
+    final static String YY_RETURN_DATA = YY_OVERRIDE_SCHEMA + "return/";// yy://return/{function}/returncontent
     final static String YY_FETCH_QUEUE = YY_RETURN_DATA + "_fetchQueue/";
     final static String EMPTY_STR = "";
     final static String UNDERLINE_STR = "_";
@@ -74,7 +75,7 @@ public class BridgeUtil {
         try {
             in = c.getAssets().open(urlStr);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-            String line = null;
+            String line;
             StringBuilder sb = new StringBuilder();
             do {
                 line = bufferedReader.readLine();
