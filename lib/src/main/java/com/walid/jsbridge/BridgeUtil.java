@@ -26,11 +26,11 @@ public class BridgeUtil {
     final static String JS_HANDLE_MESSAGE_FROM_JAVA = "javascript:AEJSBridge._handleMessageFromNative('%s');";
     final static String JS_FETCH_QUEUE_FROM_JAVA = "javascript:AEJSBridge._fetchQueue();";
 
-    public static String parseFunctionName(String jsUrl) {
+    static String parseFunctionName(String jsUrl) {
         return jsUrl.replace("javascript:AEJSBridge.", "").replaceAll("\\(.*\\);", "");
     }
 
-    public static String getDataFromReturnUrl(String url) {
+    static String getDataFromReturnUrl(String url) {
         if (url.startsWith(YY_FETCH_QUEUE)) {
             return url.replace(YY_FETCH_QUEUE, EMPTY_STR);
         }
@@ -46,7 +46,7 @@ public class BridgeUtil {
         return null;
     }
 
-    public static String getFunctionFromReturnUrl(String url) {
+    static String getFunctionFromReturnUrl(String url) {
         String temp = url.replace(YY_RETURN_DATA, EMPTY_STR);
         String[] functionAndData = temp.split(SPLIT_MARK);
         if (functionAndData.length >= 1) {
@@ -57,6 +57,8 @@ public class BridgeUtil {
 
     /**
      * js 文件将注入为第一个script引用
+     * @param view WebView
+     * @param url url路径
      */
     public static void webViewLoadJs(WebView view, String url) {
         String js = "var newscript = document.createElement(\"script\");";
@@ -65,7 +67,7 @@ public class BridgeUtil {
         view.loadUrl("javascript:" + js);
     }
 
-    public static void webViewLoadLocalJs(WebView view, String path) {
+    static void webViewLoadLocalJs(WebView view, String path) {
         String jsContent = assetFile2Str(view.getContext(), path);
         view.loadUrl("javascript:" + jsContent);
     }
