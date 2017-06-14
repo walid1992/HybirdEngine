@@ -8,7 +8,7 @@ android and js ~
 
 ```
 dependencies {
-    compile 'com.github.lzyzsd:jsbridge:1.0.4'
+    compile 'com.walid:jsbridge:0.0.2'
 }
 ```
 
