@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 version = "1.0.0"
 
@@ -21,4 +22,16 @@ android {
 }
 
 dependencies {
+}
+
+// jcenter 上传配置
+publish {
+    artifactId = 'promise'
+    userOrg = rootProject.userOrg
+    groupId = rootProject.groupId
+//    uploadName = rootProject.uploadName
+    publishVersion = "0.0.1"
+    desc = "android promise lib"
+    website = 'https://github.com/walid1992/promise'
+    licences = rootProject.licences
 }

@@ -8,6 +8,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.3.3'
         // lambda 表达式
         classpath 'me.tatarka:gradle-retrolambda:3.6.1'
+        classpath 'com.novoda:bintray-release:0.3.4'
     }
 }
 
@@ -15,4 +16,15 @@ allprojects {
     repositories {
         jcenter()
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    // jcenter 上传配置
+    userOrg = 'walid1992'
+    groupId = 'com.walid'
+    licences = ['Apache-2.0']
 }
