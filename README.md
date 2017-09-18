@@ -2,7 +2,7 @@
 
 -----
 
-android and js ~
+Android and JS communication ~
 
 ## Usage
 
