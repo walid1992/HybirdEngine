@@ -103,10 +103,18 @@ class Message {
         return null;
     }
 
-    static Message toObject(String jsonStr) {
+//    static Message toMessage(JSCallData callData) {
+//        Message m = new Message();
+//        m.setData(callData.getData());
+//        m.setCode(callData.getCode());
+//        m.setMsg(callData.getMsg());
+//        return m;
+//    }
+
+    static Message toMessage(String jsonData) {
         Message m = new Message();
         try {
-            JSONObject jsonObject = new JSONObject(jsonStr);
+            JSONObject jsonObject = new JSONObject(jsonData);
             m.setHandlerName(jsonObject.has(HANDLER_NAME) ? jsonObject.getString(HANDLER_NAME) : null);
             m.setCallbackId(jsonObject.has(CALLBACK_ID) ? jsonObject.getString(CALLBACK_ID) : null);
             m.setData(jsonObject.has(DATA) ? jsonObject.getString(DATA) : null);
@@ -115,14 +123,14 @@ class Message {
             return m;
         } catch (JSONException e) {
             e.printStackTrace();
+            return m;
         }
-        return m;
     }
 
-    static List<Message> toArrayList(String jsonStr) {
+    static List<Message> toMessageList(String jsonData) {
         List<Message> list = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(jsonStr);
+            JSONArray jsonArray = new JSONArray(jsonData);
             for (int i = 0; i < jsonArray.length(); i++) {
                 Message m = new Message();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

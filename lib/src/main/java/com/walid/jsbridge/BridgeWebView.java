@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
+import com.walid.jsbridge.factory.JSCallData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,19 +66,6 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
         this.getSettings().setAppCachePath(appCachePath);
         this.getSettings().setAllowFileAccess(true);
         this.getSettings().setAppCacheEnabled(true);
-
-        //sj Dongsheng add 20170608
-//        this.setVerticalScrollBarEnabled(false);
-//        this.setHorizontalScrollBarEnabled(false);
-//        this.getSettings().setBuiltInZoomControls(false);
-//        this.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-//        this.getSettings().setBlockNetworkImage(true);
-//        this.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-//        this.getSettings().setAllowFileAccess(true);
-//        this.getSettings().setAppCacheEnabled(true);
-//        this.getSettings().setSaveFormData(false);
-//        this.getSettings().setLoadsImagesAutomatically(true);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
@@ -122,7 +111,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
         ICallBackFunction f = dispatchCallbacks.get(functionName);
         String data = BridgeUtil.getDataFromReturnUrl(url);
         if (f != null) {
-            f.onCallBack(data);
+            f.onCallBack(new JSCallData(0, "ok", data));
             dispatchCallbacks.remove(functionName);
         }
     }
@@ -145,49 +134,37 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     void queryJsMessageQueue() {
         if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
-            loadUrl(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, new ICallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    // deserializeMessage
-                    List<Message> list = Message.toArrayList(data);
-                    for (int i = 0; i < list.size(); i++) {
-                        Message m = list.get(i);
-                        String responseId = m.getResponseId();
-                        // dispatch callback
-                        if (!TextUtils.isEmpty(responseId)) {
-                            ICallBackFunction function = dispatchCallbacks.get(responseId);
-                            String responseData = m.getData();
-                            function.onCallBack(responseData);
-                            dispatchCallbacks.remove(responseId);
-                            // register callBack
-                        } else {
-                            ICallBackFunction responseFunc;
-                            // has callbackId isn't default handler
-                            final String callbackId = m.getCallbackId();
-                            if (!TextUtils.isEmpty(callbackId)) {
-                                responseFunc = new ICallBackFunction() {
-                                    @Override
-                                    public void onCallBack(String data) {
-                                        Message responseMsg = new Message();
-                                        responseMsg.setResponseId(callbackId);
-                                        responseMsg.setData(data);
-                                        dispatchMessage(responseMsg);
-                                    }
-                                };
-                            } else {
-                                responseFunc = new ICallBackFunction() {
-                                    @Override
-                                    public void onCallBack(String data) {
-                                        // do nothing
-                                    }
-                                };
+            loadUrl(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, callData -> {
+                // deserializeMessage
+                List<Message> messageList = Message.toMessageList(callData.getData());
+                for (Message m : messageList) {
+                    String responseId = m.getResponseId();
+                    // dispatch callback
+                    if (!TextUtils.isEmpty(responseId)) {
+                        ICallBackFunction function = dispatchCallbacks.get(responseId);
+                        function.onCallBack(callData);
+                        dispatchCallbacks.remove(responseId);
+                        // register callBack
+                    } else {
+                        ICallBackFunction responseFunc;
+                        final String callbackId = m.getCallbackId();
+                        responseFunc = respCallData -> {
+                            // 没有 callbackId 不负责事件分发
+                            if (TextUtils.isEmpty(callbackId)) {
+                                return;
                             }
-                            IBridgeHandler handler;
-                            if (!TextUtils.isEmpty(m.getHandlerName())) {
-                                handler = registerHandlers.get(m.getHandlerName());
-                                if (handler != null) {
-                                    handler.handler(m.getParams(), responseFunc);
-                                }
+                            Message responseMsg = new Message();
+                            responseMsg.setResponseId(callbackId);
+                            responseMsg.setMsg(respCallData.getMsg());
+                            responseMsg.setCode(respCallData.getCode());
+                            responseMsg.setData(respCallData.getData());
+                            dispatchMessage(responseMsg);
+                        };
+                        IBridgeHandler handler;
+                        if (!TextUtils.isEmpty(m.getHandlerName())) {
+                            handler = registerHandlers.get(m.getHandlerName());
+                            if (handler != null) {
+                                handler.handler(m.getParams(), responseFunc);
                             }
                         }
                     }

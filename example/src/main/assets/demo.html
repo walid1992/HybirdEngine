@@ -30,19 +30,19 @@
   }
 
   var func = function (res) {
-    document.getElementById("show").innerHTML = "params from Java: = " + res;
+    document.getElementById("show").innerHTML = "params from Java: = " + JSON.stringify(res);
   }
 
   function addEvent() {
     window.AEJSBridge.addEventListener({
-      handlerName: 'functionInJs',
+      handlerName: 'event_test_netChange',
       callback: func
     });
   }
 
   function removeEvent() {
     window.AEJSBridge.removeEventListener({
-      handlerName: 'functionInJs',
+      handlerName: 'event_test_netChange',
       execFunc: func
     });
   }
@@ -50,10 +50,10 @@
   function dispatch() {
     //call native method
     window.AEJSBridge.dispatch({
-      handlerName: 'submitFromWeb',
-      params: {'param': '中文测试'},
-      callback: function (responseData) {
-        document.getElementById("show").innerHTML = "send get responseData from java, params = " + responseData
+      handlerName: 'action_test_doTest',
+      params: {'platform': 'wechat'},
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
       }
     });
   }

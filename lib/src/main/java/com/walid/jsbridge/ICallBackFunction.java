@@ -1,5 +1,7 @@
 package com.walid.jsbridge;
 
+import com.walid.jsbridge.factory.JSCallData;
+
 /**
  * Author : walid
  * Data : 2017-06-01  15:05
@@ -7,6 +9,6 @@ package com.walid.jsbridge;
  */
 public interface ICallBackFunction {
 	
-	void onCallBack(String data);
+	void onCallBack(JSCallData callData);
 
 }
