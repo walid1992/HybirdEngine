@@ -36,7 +36,7 @@ publish {
     userOrg = rootProject.userOrg
     groupId = rootProject.groupId
 //    uploadName = rootProject.uploadName
-    publishVersion = "0.0.2"
+    publishVersion = "0.0.3"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
     licences = rootProject.licences

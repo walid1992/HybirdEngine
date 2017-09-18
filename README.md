@@ -8,11 +8,11 @@ android and js ~
 
 ```
 dependencies {
-    compile 'com.walid:jsbridge:0.0.2'
+    compile 'com.walid:jsbridge:0.0.3'
 }
 ```
 
-## use in java
+## USE in Java
 
 ## dispatch
 
@@ -29,35 +29,41 @@ dependencies {
 ## register
 
 ```
-    webView.register("submitFromWeb", new IBridgeHandler() {
-        @Override
-        public void handler(String data, ICallBackFunction function) {
-            Log.i(TAG, "handler = submitFromWeb, data from web = " + data);
-            function.onCallBack("submitFromWeb exe, response data 中文 from Java");
-        }
-    });
+@JSMoudle(name = "test")
+public class TestModule extends BridgeModule {
+
+    @JSMethod(alias = "doTest")
+    public void oauth(BridgeWebView webView, HashMap<String, Object> map, ICallBackFunction function) {
+        Log.d("OauthUtils", map.toString());
+        String platform = (String) map.get("platform");
+        Log.d("TestModule", platform);
+        function.onCallBack(new JSCallData(0, "ok", "请求成功！"));
+    }
+
+}
+    
+BridgeModuleManager.registerModule(webView, TestModule.class);
 ```
 
-## use in js
+## USE in JS
 
 ### dispatch
 
 ```
     window.AEJSBridge.dispatch({
-      handlerName: 'submitFromWeb',
-      params: {'param': '中文测试'},
-      callback: function (responseData) {
-        document.getElementById("show").innerHTML = "send get responseData from java, params = " + responseData
+      handlerName: 'action_test_doTest',
+      params: {'platform': 'wechat'},
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
       }
     });
-
 ```
 
 ## addEventListener
 
 ```
     window.AEJSBridge.addEventListener({
-      handlerName: 'functionInJs',
+      handlerName: 'event_test_netChange',
       callback: func
     });
 ```
@@ -66,7 +72,7 @@ dependencies {
 
 ```
     window.AEJSBridge.removeEventListener({
-      handlerName: 'functionInJs',
+      handlerName: 'event_test_netChange',
       execFunc: func
     });
 ```
