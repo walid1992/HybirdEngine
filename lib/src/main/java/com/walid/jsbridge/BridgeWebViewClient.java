@@ -16,7 +16,7 @@ public class BridgeWebViewClient extends WebViewClient {
 
     private BridgeWebView webView;
 
-    protected BridgeWebViewClient(BridgeWebView webView) {
+    public BridgeWebViewClient(BridgeWebView webView) {
         this.webView = webView;
     }
 

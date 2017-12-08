@@ -72,7 +72,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
         this.setWebViewClient(genBridgeWebViewClient());
     }
 
-    protected BridgeWebViewClient genBridgeWebViewClient() {
+    public BridgeWebViewClient genBridgeWebViewClient() {
         return new BridgeWebViewClient(this);
     }
 
@@ -117,7 +117,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
     }
 
     void dispatchMessage(Message m) {
-        // 如果没初始化成功
+        // no init success
         if (startupMsgs != null) {
             startupMsgs.add(m);
         } else {
@@ -149,7 +149,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
                         ICallBackFunction responseFunc;
                         final String callbackId = m.getCallbackId();
                         responseFunc = respCallData -> {
-                            // 没有 callbackId 不负责事件分发
+                            // none callbackId dont dispatch
                             if (TextUtils.isEmpty(callbackId)) {
                                 return;
                             }

@@ -3,7 +3,6 @@ package com.walid.jsbridge.factory;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.walid.jsbridge.BridgeWebView;
 
@@ -19,7 +18,11 @@ import java.util.Map;
  */
 public class BridgeModuleManager {
 
-    // 判断是否为合法 JSON
+    /**
+     * is valid JSON
+     * @param json
+     * @return
+     */
     private static boolean isJson(String json) {
         try {
             new JSONObject(json);
@@ -32,7 +35,6 @@ public class BridgeModuleManager {
     public static <T extends BridgeModule> void registerModule(final BridgeWebView bridgeWebView, final Class<T> wxModuleClass) {
         TypeModuleFactory typeModuleFactory = new TypeModuleFactory<>(wxModuleClass);
         String[] methodNames = typeModuleFactory.getMethods();
-        new JsonParser().parse("aaa");
         for (String methodName : methodNames) {
             Log.d("BridgeModuleManager", "register" + methodName);
             bridgeWebView.register(methodName, (data, function) -> {

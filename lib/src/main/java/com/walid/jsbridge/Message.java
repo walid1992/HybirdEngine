@@ -17,10 +17,10 @@ class Message {
     private String callbackId; // callbackId
     private String responseId; // responseId
     private String data; // data
-    private String handlerName; // 事件名称
-    private String params; // 事件参数
-    private int code = 0; // 状态码
-    private String msg; // 消息
+    private String handlerName;
+    private String params;
+    private int code = 0;
+    private String msg;
 
     private final static String CALLBACK_ID = "callbackId";
     private final static String RESPONSE_ID = "responseId";

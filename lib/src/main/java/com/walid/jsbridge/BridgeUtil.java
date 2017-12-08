@@ -56,9 +56,9 @@ public class BridgeUtil {
     }
 
     /**
-     * js 文件将注入为第一个script引用
+     * js script
      * @param view WebView
-     * @param url url路径
+     * @param url url path
      */
     public static void webViewLoadJs(WebView view, String url) {
         String js = "var newscript = document.createElement(\"script\");";

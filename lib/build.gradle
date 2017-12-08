@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'me.tatarka.retrolambda'
 
 version = "1.0.0"
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 15
@@ -21,13 +20,13 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.7'
+    api 'com.google.code.gson:gson:2.8.1'
 }
 
 // jcenter 上传配置
@@ -36,7 +35,7 @@ publish {
     userOrg = rootProject.userOrg
     groupId = rootProject.groupId
 //    uploadName = rootProject.uploadName
-    publishVersion = "0.0.3"
+    publishVersion = "0.5.1"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
     licences = rootProject.licences

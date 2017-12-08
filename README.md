@@ -8,7 +8,7 @@ Android and JS communication ~
 
 ```
 dependencies {
-    compile 'com.walid:jsbridge:0.0.3'
+    compile 'com.walid:jsbridge:0.5.1'
 }
 ```
 
@@ -17,7 +17,7 @@ dependencies {
 ## dispatch
 
 ```
-    webView.dispatch("functionInJs", "data from Java", new ICallBackFunction() {
+    webView.dispatch("event_test_netChange", "data from Java", new ICallBackFunction() {
         @Override
         public void onCallBack(String data) {
             Log.i(TAG, "reponse data from js " + data);
