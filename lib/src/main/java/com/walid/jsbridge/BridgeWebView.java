@@ -7,8 +7,8 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.webkit.WebView;
 
+import com.tencent.smtt.sdk.WebView;
 import com.walid.jsbridge.factory.JSCallData;
 
 import java.util.ArrayList;
