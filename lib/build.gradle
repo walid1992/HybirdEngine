@@ -4,8 +4,8 @@ apply plugin: 'com.novoda.bintray-release'
 version = "1.0.0"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 15
@@ -33,11 +33,10 @@ dependencies {
 // jcenter 上传配置
 publish {
     artifactId = 'jsbridge'
-    userOrg = rootProject.userOrg
-    groupId = rootProject.groupId
+    userOrg = 'walid1992'//bintray.com用户名
+    groupId = 'com.walid'//jcenter上的路径
 //    uploadName = rootProject.uploadName
     publishVersion = "1.0.0"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
-    licences = rootProject.licences
 }

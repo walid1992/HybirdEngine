@@ -1,19 +1,16 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.novoda:bintray-release:0.8.0'
     }
 }
 
 allprojects {
     repositories {
-        maven { url "https://jitpack.io" }
         jcenter()
         google()
     }
@@ -21,11 +18,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    // jcenter 上传配置
-    userOrg = 'walid1992'
-    groupId = 'com.walid'
-    licences = ['Apache-2.0']
 }
