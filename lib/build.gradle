@@ -4,12 +4,12 @@ apply plugin: 'com.novoda.bintray-release'
 version = "1.0.0"
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.3'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName version
     }
@@ -26,7 +26,8 @@ android {
 }
 
 dependencies {
-    api 'com.google.code.gson:gson:2.8.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.google.code.gson:gson:2.8.2'
 }
 
 // jcenter 上传配置
