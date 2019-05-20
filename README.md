@@ -20,7 +20,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.walid1992:AndroidJSBridge:v1.0.0.beta'
+    implementation 'com.github.walid1992:JSBridge:v1.0.0.beta'
 }
 ```
 
