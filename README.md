@@ -16,9 +16,11 @@ allprojects {
 }
 ```
 
+在工程目录 build.gradle 中加入：
+
 ```
 dependencies {
-    compile 'com.walid:jsbridge:0.5.1'
+    implementation 'com.github.walid1992:AndroidJSBridge:v1.0.0.beta'
 }
 ```
 
