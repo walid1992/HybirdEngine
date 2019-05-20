@@ -1,10 +1,20 @@
-# AndroidJsBridge
+# Android 与 JS 桥接库
 
 -----
 
-Android and JS communication ~
+Android and JS communication ，由于 jcenter 目前上传遇到问题，最新版本采用 jitpack 方式~
 
 ## Usage
+
+在项目根目录 build.gradle 中加入：
+
+```
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
 ```
 dependencies {

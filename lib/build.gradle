@@ -33,10 +33,9 @@ dependencies {
 // jcenter 上传配置
 publish {
     artifactId = 'jsbridge'
-    userOrg = 'walid1992'//bintray.com用户名
-    groupId = 'com.walid'//jcenter上的路径
-//    uploadName = rootProject.uploadName
-    publishVersion = "1.0.0"
+    userOrg = 'walid1992'
+    groupId = 'com.walid'
+    publishVersion = "0.9.3"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
 }
