@@ -2,25 +2,15 @@
 
 -----
 
-Android and JS communication ，由于 jcenter 目前上传遇到问题，最新版本采用 jitpack 方式~
+Android and JS communication~
 
 ## Usage
-
-在项目根目录 build.gradle 中加入：
-
-```
-allprojects {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
 
 在工程目录 build.gradle 中加入：
 
 ```
 dependencies {
-    implementation 'com.github.walid1992:JSBridge:v1.0.0.beta'
+    implementation 'com.walid:jsbridge:1.0.1'
 }
 ```
 
