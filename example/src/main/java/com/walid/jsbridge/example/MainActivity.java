@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.walid.jsbridge.BridgeWebView;
-import com.walid.jsbridge.ICallBackFunction;
+import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModuleManager;
 import com.walid.jsbridge.factory.JSCallData;
 
@@ -22,16 +22,16 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webView = (BridgeWebView) findViewById(R.id.webView);
+        webView = findViewById(R.id.webView);
 
-        Button button = (Button) findViewById(R.id.button);
+        Button button = findViewById(R.id.button);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                webView.dispatch("event_test_netChange", "data from Java", new ICallBackFunction() {
+                webView.dispatch("event_test_netChange", "data from Java", new IDispatchCallBack() {
                     @Override
                     public void onCallBack(JSCallData data) {
-                        Log.i(TAG, "reponse data from js " + data);
+                        Log.i(TAG, "reponse data from js " + data.getData());
                     }
                 });
             }

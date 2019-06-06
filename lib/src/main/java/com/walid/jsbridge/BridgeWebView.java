@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tencent.smtt.sdk.WebView;
 import com.walid.jsbridge.factory.JSCallData;
 
@@ -26,7 +28,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     public static final String LOCAL_JSFile = "JsBridge.js";
     private static final int APP_CACHE_MAX_SIZE = 1024 * 1024 * 8;
-    private Map<String, ICallBackFunction> dispatchCallbacks = new HashMap<>();
+    private Map<String, IDispatchCallBack> dispatchCallbacks = new HashMap<>();
     private Map<String, IBridgeHandler> registerHandlers = new HashMap<>();
     private List<Message> startupMsgs = new ArrayList<>();
     private long uniqueId = 0;
@@ -90,7 +92,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
      * call javascript registered handler
      */
     @Override
-    public void dispatch(String handlerName, String data, ICallBackFunction callBack) {
+    public void dispatch(String handlerName, String data, IDispatchCallBack callBack) {
         Message m = new Message();
         if (!TextUtils.isEmpty(data)) {
             m.setData(data);
@@ -108,7 +110,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     void handleJsMessageData(String url) {
         String functionName = BridgeUtil.getFunctionFromReturnUrl(url);
-        ICallBackFunction f = dispatchCallbacks.get(functionName);
+        IDispatchCallBack f = dispatchCallbacks.get(functionName);
         String data = BridgeUtil.getDataFromReturnUrl(url);
         if (f != null) {
             f.onCallBack(new JSCallData(0, "ok", data));
@@ -139,14 +141,23 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
                 List<Message> messageList = Message.toMessageList(callData.getData());
                 for (Message m : messageList) {
                     String responseId = m.getResponseId();
-                    // dispatch callback
                     if (!TextUtils.isEmpty(responseId)) {
-                        ICallBackFunction function = dispatchCallbacks.get(responseId);
-                        function.onCallBack(callData);
-                        dispatchCallbacks.remove(responseId);
-                        // register callBack
+                        // dispatch callback
+                        IDispatchCallBack function = dispatchCallbacks.get(responseId);
+                        if (function != null) {
+                            // 读取真正数据
+                            try {
+                                JSCallData realCall = new Gson().fromJson(m.getData(), new TypeToken<JSCallData>() {
+                                }.getType());
+                                function.onCallBack(realCall);
+                            } catch (Exception e) {
+                                function.onCallBack(new JSCallData(0, "ok", m.getData()));
+                            }
+                            dispatchCallbacks.remove(responseId);
+                        }
                     } else {
-                        ICallBackFunction responseFunc;
+                        // register callBack
+                        IDispatchCallBack responseFunc;
                         final String callbackId = m.getCallbackId();
                         responseFunc = respCallData -> {
                             // none callbackId dont dispatch
@@ -173,7 +184,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
         }
     }
 
-    public void loadUrl(String jsUrl, ICallBackFunction returnCallback) {
+    public void loadUrl(String jsUrl, IDispatchCallBack returnCallback) {
         this.loadUrl(jsUrl);
         dispatchCallbacks.put(BridgeUtil.parseFunctionName(jsUrl), returnCallback);
     }

@@ -9,6 +9,6 @@ interface IWebViewJsBridge {
 
     void register(String eventName, IBridgeHandler handler);
 
-    void dispatch(String eventName, String data, ICallBackFunction callBack);
+    void dispatch(String eventName, String data, IDispatchCallBack callBack);
 
 }

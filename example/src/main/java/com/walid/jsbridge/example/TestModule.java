@@ -3,7 +3,7 @@ package com.walid.jsbridge.example;
 import android.util.Log;
 
 import com.walid.jsbridge.BridgeWebView;
-import com.walid.jsbridge.ICallBackFunction;
+import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModule;
 import com.walid.jsbridge.factory.JSCallData;
 import com.walid.jsbridge.factory.JSMethod;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class TestModule extends BridgeModule {
 
     @JSMethod(alias = "doTest")
-    public void oauth(BridgeWebView webView, HashMap<String, Object> map, ICallBackFunction function) {
+    public void oauth(BridgeWebView webView, HashMap<String, Object> map, IDispatchCallBack function) {
         Log.d("OauthUtils", map.toString());
         String platform = (String) map.get("platform");
         Log.d("TestModule", platform);

@@ -29,7 +29,12 @@
     document.getElementById("show").innerHTML = document.getElementsByTagName("html")[0].innerHTML;
   }
 
-  var func = function (res) {
+  var func = function (res, callback) {
+    callback({
+      code: 0,
+      data: '1234567890',
+      msg: '请求成功~'
+    })
     document.getElementById("show").innerHTML = "params from Java: = " + JSON.stringify(res);
   }
 
@@ -57,6 +62,8 @@
       }
     });
   }
+
+
 
 </script>
 

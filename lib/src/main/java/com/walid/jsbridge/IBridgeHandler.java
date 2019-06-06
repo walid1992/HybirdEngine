@@ -7,6 +7,6 @@ package com.walid.jsbridge;
  */
 public interface IBridgeHandler {
 	
-	void handler(String data, ICallBackFunction function);
+	void handler(String data, IDispatchCallBack function);
 
 }

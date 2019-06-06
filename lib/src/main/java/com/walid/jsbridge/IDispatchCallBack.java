@@ -7,7 +7,7 @@ import com.walid.jsbridge.factory.JSCallData;
  * Data : 2017-06-01  15:05
  * Describe :
  */
-public interface ICallBackFunction {
+public interface IDispatchCallBack {
 	
 	void onCallBack(JSCallData callData);
 
