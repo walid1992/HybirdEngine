@@ -26,7 +26,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.android.support:appcompat-v7:28.0.0'
-//    implementation 'com.github.walid1992:JSBridge:v1.0.0.beta2'
-    implementation project(':lib')
+    implementation 'com.github.walid1992:JSBridge:feature-javadispatchcall-SNAPSHOT'
+//    implementation project(':lib')
 //    implementation 'com.walid:jsbridge:0.9.3'
 }
