@@ -161,14 +161,14 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
                         final String callbackId = m.getCallbackId();
                         responseFunc = respCallData -> {
                             // none callbackId dont dispatch
-                            if (TextUtils.isEmpty(callbackId)) {
+                            if (TextUtils.isEmpty(callbackId) || respCallData == null) {
                                 return;
                             }
                             Message responseMsg = new Message();
                             responseMsg.setResponseId(callbackId);
                             responseMsg.setMsg(respCallData.getMsg());
                             responseMsg.setCode(respCallData.getCode());
-                            responseMsg.setData(respCallData.getData());
+                            responseMsg.setData(TextUtils.isEmpty(respCallData.getData()) ? "" : respCallData.getData().replaceAll("\n", ""));
                             dispatchMessage(responseMsg);
                         };
                         IBridgeHandler handler;

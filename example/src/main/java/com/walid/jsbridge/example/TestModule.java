@@ -24,7 +24,7 @@ public class TestModule extends BridgeModule {
         Log.d("OauthUtils", map.toString());
         String platform = (String) map.get("platform");
         Log.d("TestModule", platform);
-        function.onCallBack(new JSCallData(0, "ok", "请求成功！"));
+        function.onCallBack(new JSCallData(0, "ok", "请求成功！\n"));
     }
 
 }
