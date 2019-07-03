@@ -1,4 +1,4 @@
-# Android 与 JS 桥接库
+# Android and JS communication
 
 -----
 
@@ -6,12 +6,25 @@ Android and JS communication~
 
 ## Usage
 
-在工程目录 build.gradle 中加入：
+Step 1. Add the JitPack repository to your build file
+
+Add it in your root build.gradle at the end of repositories:
 
 ```
-dependencies {
-    implementation 'com.walid:jsbridge:1.0.1'
-}
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+Step 2. Add the dependency：
+
+```
+	dependencies {
+	    com.github.walid1992:JSBridge:${last_version}
+	}
 ```
 
 ## USE in Java
