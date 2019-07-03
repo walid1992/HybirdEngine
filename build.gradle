@@ -5,7 +5,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.novoda:bintray-release:0.9.1'
+//        classpath 'com.novoda:bintray-release:0.9.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
@@ -16,6 +17,13 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven {
             url 'https://dl.bintray.com/novoda-oss/snapshots/'
+        }
+    }
+    tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
         }
     }
 }
