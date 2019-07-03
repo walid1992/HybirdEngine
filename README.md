@@ -23,7 +23,7 @@ Step 2. Add the dependency：
 
 ```
 	dependencies {
-	    com.github.walid1992:JSBridge:${last_version}
+	    com.github.walid1992:JSBridge:feature-1.0.3-SNAPSHOT
 	}
 ```
 
