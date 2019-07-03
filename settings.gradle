@@ -1,1 +1,3 @@
 include ':example', ':lib'
+
+rootProject.name = 'JsBridge'
