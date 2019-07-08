@@ -79,7 +79,7 @@ BridgeModuleManager.registerModule(webView, TestModule.class);
 ```
     window.AEJSBridge.addEventListener({
       handlerName: 'event_test_netChange',
-      callback: func
+      exec: func
     });
 ```
 
@@ -88,7 +88,7 @@ BridgeModuleManager.registerModule(webView, TestModule.class);
 ```
     window.AEJSBridge.removeEventListener({
       handlerName: 'event_test_netChange',
-      execFunc: func
+      exec: func
     });
 ```
 
