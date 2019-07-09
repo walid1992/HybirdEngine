@@ -23,7 +23,7 @@ Step 2. Add the dependency：
 
 ```
 	dependencies {
-	    com.github.walid1992:JSBridge:feature-1.0.3-SNAPSHOT
+	    implementation 'com.walid:jsbridge:1.0.4'
 	}
 ```
 
@@ -79,7 +79,7 @@ BridgeModuleManager.registerModule(webView, TestModule.class);
 ```
     window.AEJSBridge.addEventListener({
       handlerName: 'event_test_netChange',
-      callback: func
+      exec: func
     });
 ```
 
@@ -88,7 +88,7 @@ BridgeModuleManager.registerModule(webView, TestModule.class);
 ```
     window.AEJSBridge.removeEventListener({
       handlerName: 'event_test_netChange',
-      execFunc: func
+      exec: func
     });
 ```
 

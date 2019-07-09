@@ -41,14 +41,14 @@
   function addEvent() {
     window.AEJSBridge.addEventListener({
       handlerName: 'event_test_netChange',
-      callback: func
+      exec: func
     });
   }
 
   function removeEvent() {
     window.AEJSBridge.removeEventListener({
       handlerName: 'event_test_netChange',
-      execFunc: func
+      exec: func
     });
   }
 

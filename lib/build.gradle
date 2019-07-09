@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.novoda.bintray-release'
 
 // jitpack 配置
 apply plugin: 'com.github.dcendents.android-maven'
@@ -9,14 +9,14 @@ version = '1.0.3'
 // jitpack 配置
 
 // jcenter 上传配置
-//publish {
-//    artifactId = 'jsbridge'
-//    userOrg = 'walid1992'
-//    groupId = 'com.walid'
-//    publishVersion = "1.0.3.1"
-//    desc = "android js bridge lib ~"
-//    website = 'https://github.com/walid1992/AndroidJSBridge'
-//}
+publish {
+    artifactId = 'jsbridge'
+    userOrg = 'walid1992'
+    groupId = 'com.walid'
+    publishVersion = "1.0.4"
+    desc = "android js bridge lib ~"
+    website = 'https://github.com/walid1992/AndroidJSBridge'
+}
 
 android {
     compileSdkVersion 28
