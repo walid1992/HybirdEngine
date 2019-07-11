@@ -48,7 +48,7 @@ public class TestModule extends BridgeModule {
         // 返回Base64编码过的字节数组字符串
     }
 
-    @JSMethod(alias = "doTest")
+    @JSMethod(alias = "doTest", sync = false)
     public void oauth(BridgeWebView webView, HashMap<String, Object> map, IDispatchCallBack function) {
         webView.post(() -> {
             Log.d("TestModule", map.toString());
