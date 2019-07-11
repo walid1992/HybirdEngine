@@ -16,4 +16,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface JSMethod {
     String alias() default "_";
+
+    boolean sync() default false;
 }

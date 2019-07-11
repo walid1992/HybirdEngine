@@ -48,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 //        webView.loadUrl("http://172.29.90.163:62143/?scbs=" + scbs);
+//        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/demo.html");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.destroy();
+    }
 }

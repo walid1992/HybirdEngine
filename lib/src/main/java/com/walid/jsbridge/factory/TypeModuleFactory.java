@@ -2,6 +2,12 @@ package com.walid.jsbridge.factory;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.walid.jsbridge.BridgeWebView;
+
+import org.json.JSONObject;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,14 +17,55 @@ public class TypeModuleFactory<T extends BridgeModule> {
 
     public static final String TAG = "TypeModuleFactory";
     private Class<T> tClass;
+    private BridgeWebView bridgeWebView;
     private Map<String, Invoker> methodMap;
+    private Map<String, Boolean> syncMap;
 
-    public TypeModuleFactory(Class<T> clz) {
+    public TypeModuleFactory(Class<T> clz, final BridgeWebView bridgeWebView) {
         this.tClass = clz;
+        this.bridgeWebView = bridgeWebView;
+    }
+
+    /**
+     * is valid JSON
+     */
+    private static boolean isJson(String json) {
+        try {
+            new JSONObject(json);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void register() {
+        String[] methods = getMethods();
+        for (String jsMethod : methods) {
+            Log.d("BridgeModuleManager", "register" + jsMethod);
+            if (syncMap.get(jsMethod)) {
+                BridgeModuleManager.put(jsMethod, this);
+                continue;
+            }
+            bridgeWebView.register(jsMethod, (data, function) -> {
+                if (!isJson(data)) {
+                    function.onCallBack(new JSCallData(-101, "json parse failed!!!", ""));
+                    return;
+                }
+                Map<String, Object> map = new Gson().fromJson(data, new TypeToken<HashMap<String, Object>>() {
+                }.getType());
+                try {
+                    Log.d("BridgeModuleManager", "register" + jsMethod);
+                    getMethodInvoker(jsMethod).invoke(tClass.newInstance(), bridgeWebView, map, function);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     private void generateMethodMap() {
         HashMap<String, Invoker> methodMap = new HashMap<>();
+        HashMap<String, Boolean> syncMap = new HashMap<>();
         try {
             JSMoudle jsMoudle = this.tClass.getAnnotation(JSMoudle.class);
             Method[] methods = this.tClass.getMethods();
@@ -26,6 +73,7 @@ public class TypeModuleFactory<T extends BridgeModule> {
                 JSMethod jsMethod = method.getAnnotation(JSMethod.class);
                 if (jsMethod != null) {
                     String name = "action_" + jsMoudle.name() + "_" + ("_".equals(jsMethod.alias()) ? method.getName() : jsMethod.alias());
+                    syncMap.put(name, jsMethod.sync());
                     methodMap.put(name, new MethodInvoker(method));
                 }
             }
@@ -33,6 +81,11 @@ public class TypeModuleFactory<T extends BridgeModule> {
             Log.e(TAG, String.valueOf(e));
         }
         this.methodMap = methodMap;
+        this.syncMap = syncMap;
+    }
+
+    public Class<T> getModuleClass() {
+        return tClass;
     }
 
     public String[] getMethods() {
@@ -47,7 +100,11 @@ public class TypeModuleFactory<T extends BridgeModule> {
         if (this.methodMap == null) {
             this.generateMethodMap();
         }
-
         return this.methodMap.get(name);
     }
+
+    public boolean hasMethod(String methodName) {
+        return methodMap != null && methodMap.containsKey(methodName);
+    }
+
 }

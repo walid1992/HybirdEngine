@@ -62,4 +62,9 @@ public class TestModule extends BridgeModule {
         });
     }
 
+    @JSMethod(alias = "doTestSync", sync = true)
+    public String testSync(BridgeWebView webView, HashMap<String, Object> map) {
+        return "1234567890";
+    }
+
 }

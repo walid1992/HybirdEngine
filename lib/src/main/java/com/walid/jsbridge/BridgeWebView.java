@@ -7,11 +7,18 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.webkit.JavascriptInterface;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.smtt.sdk.WebView;
+import com.walid.jsbridge.factory.BridgeModuleManager;
 import com.walid.jsbridge.factory.JSCallData;
+import com.walid.jsbridge.factory.TypeModuleFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -187,6 +194,47 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
     public void loadUrl(String jsUrl, IDispatchCallBack returnCallback) {
         this.loadUrl(jsUrl);
         dispatchCallbacks.put(BridgeUtil.parseFunctionName(jsUrl), returnCallback);
+    }
+
+    @Override
+    public void loadUrl(String s) {
+        addJavascriptInterface(new BridgeWebView.InnerJavascriptInterface(), "AEJSBridgeSync");
+        super.loadUrl(s);
+    }
+
+    @Override
+    public void destroy() {
+        BridgeModuleManager.clear();
+        super.destroy();
+    }
+
+    private class InnerJavascriptInterface {
+        @JavascriptInterface
+        public String dispatchSync(String handlerName, String argStr) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("code", -1);
+                jsonObject.put("msg", "failed");
+                jsonObject.put("data", "");
+            } catch (JSONException ignored) {
+            }
+            try {
+                if (!BridgeModuleManager.getSyncMaps().containsKey(handlerName)) {
+                    return jsonObject.toString();
+                }
+                TypeModuleFactory typeModuleFactory = BridgeModuleManager.getSyncMaps().get(handlerName);
+                Map<String, Object> map = new Gson().fromJson(argStr, new TypeToken<HashMap<String, Object>>() {
+                }.getType());
+                Log.d("BridgeModuleManager", "register" + handlerName);
+
+                jsonObject.put("code", 0);
+                jsonObject.put("msg", "success");
+                jsonObject.put("data", typeModuleFactory.getMethodInvoker(handlerName).invoke(typeModuleFactory.getModuleClass().newInstance(), BridgeWebView.this, map));
+                return jsonObject.toString();
+            } catch (Exception ignored) {
+            }
+            return jsonObject.toString();
+        }
     }
 
 }

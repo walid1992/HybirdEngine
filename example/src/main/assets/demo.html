@@ -53,7 +53,9 @@
   }
 
   function dispatch() {
-    //call native method
+    // 分发同步方法
+    document.getElementById("show").innerHTML = "params from Java: = " + (window.AEJSBridge.dispatchSync({handlerName:"action_test_doTestSync",params:{'walid':'12345'}})).code;
+    // 分发异步方法
     window.AEJSBridge.dispatch({
       handlerName: 'action_test_doTest',
       params: {'platform': 'wechat'},
@@ -62,8 +64,6 @@
       }
     });
   }
-
-
 
 </script>
 
