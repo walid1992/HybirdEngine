@@ -1,6 +1,5 @@
 package com.walid.jsbridge.example;
 
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
@@ -55,10 +54,10 @@ public class TestModule extends BridgeModule {
             String platform = (String) map.get("platform");
             Log.d("TestModule", platform);
 
-            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
-            Log.d("TestModule", base64);
-//        function.onCallBack(new JSCallData(0, "ok", "sdasdasd"));
-            function.onCallBack(new JSCallData(0, "ok", base64.replaceAll("\n", "")));
+//            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
+//            Log.d("TestModule", base64);
+            function.onCallBack(new JSCallData(0, "ok", "sdasdasd"));
+//            function.onCallBack(new JSCallData(0, "ok", base64.replaceAll("\n", "")));
         });
     }
 
