@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 import com.walid.jsbridge.BridgeWebView;
+import com.walid.jsbridge.BridgeWebViewClient;
 import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModuleManager;
 import com.walid.jsbridge.factory.JSCallData;
@@ -49,7 +52,26 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //        webView.loadUrl("http://172.29.90.163:62143/?scbs=" + scbs);
 //        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/demo.html");
+
+
+        // 解决 XMLHttpRequest cannot load file from android asset folder
+        WebSettings ws = webView.getSettings();
+        ws.setJavaScriptEnabled(true);
+        ws.setPluginState(WebSettings.PluginState.ON);
+        ws.setAllowFileAccess(true);
+        ws.setAllowContentAccess(true);
+        ws.setAllowFileAccessFromFileURLs(true);
+        ws.setAllowUniversalAccessFromFileURLs(true);
+
+        webView.setWebViewClient(new BridgeWebViewClient(webView){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
+
+//        webView.loadUrl("file:///android_asset/web-mobile/index.html");
+        webView.loadUrl("https://www.baidu.com");
     }
 
     @Override
@@ -57,4 +79,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         webView.destroy();
     }
+
 }

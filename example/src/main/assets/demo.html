@@ -48,7 +48,10 @@
   function removeEvent() {
     window.AEJSBridge.removeEventListener({
       handlerName: 'event_test_netChange',
-      exec: func
+      exec: func,
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+      }
     });
   }
 

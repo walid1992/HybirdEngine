@@ -2,6 +2,7 @@ package com.walid.jsbridge;
 
 import android.graphics.Bitmap;
 
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
@@ -19,6 +20,11 @@ public class BridgeWebViewClient extends WebViewClient {
 
     public BridgeWebViewClient(BridgeWebView webView) {
         this.webView = webView;
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+        return super.shouldOverrideUrlLoading(webView, webResourceRequest);
     }
 
     @Override
