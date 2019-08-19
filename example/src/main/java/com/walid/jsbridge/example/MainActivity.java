@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+        button.setOnClickListener(v -> {
+            webView.loadUrl("http://172.29.23.164:7456");
+        });
+
         BridgeModuleManager.registerModule(webView, TestModule.class);
 
 //        String scbs = "";
@@ -56,22 +60,37 @@ public class MainActivity extends AppCompatActivity {
 
         // 解决 XMLHttpRequest cannot load file from android asset folder
         WebSettings ws = webView.getSettings();
-        ws.setJavaScriptEnabled(true);
-        ws.setPluginState(WebSettings.PluginState.ON);
-        ws.setAllowFileAccess(true);
-        ws.setAllowContentAccess(true);
-        ws.setAllowFileAccessFromFileURLs(true);
-        ws.setAllowUniversalAccessFromFileURLs(true);
-
-        webView.setWebViewClient(new BridgeWebViewClient(webView){
+//        ws.setJavaScriptEnabled(true);
+//        ws.setPluginState(WebSettings.PluginState.ON);
+//        ws.setAllowFileAccess(true);
+//        ws.setAllowContentAccess(true);
+//        ws.setAllowFileAccessFromFileURLs(true);
+//        ws.setAllowUniversalAccessFromFileURLs(true);
+        BridgeModuleManager.registerModule(webView, PlanetModule.class);
+        webView.setWebViewClient(new BridgeWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
 
-//        webView.loadUrl("file:///android_asset/web-mobile/index.html");
-        webView.loadUrl("https://www.baidu.com");
+//        [{
+//            "birthday":0, "description":"", "gender":"FEMALE", "inExposure":false, "isBubble":
+//            false, "matchvalue":0.9319956, "signature":"倚楼听风雨，淡看江湖路", "userId":"-1", "userIdEcpt":
+//            "VkZ0R3NKZElJRVBWVlgvZUh1NEExdz09"
+//        }]
+
+        webView.loadUrl("http://172.29.23.164:7456");
+
+//        webView.dispatch("planet_set_data", "[{\n" +
+//                "            \"birthday\":0, \"description\":\"\", \"gender\":\"FEMALE\", \"inExposure\":false, \"isBubble\":\n" +
+//                "            false, \"matchvalue\":0.9319956, \"signature\":\"倚楼听风雨，淡看江湖路\", \"userId\":\"-1\", \"userIdEcpt\":\n" +
+//                "            \"VkZ0R3NKZElJRVBWVlgvZUh1NEExdz09\"\n" +
+//                "        }]", null);
+
+//        webView.loadUrl("https://www.baidu.com");
+
+//        webView.loadUrl("file:///android_asset/demo.html");
     }
 
     @Override
