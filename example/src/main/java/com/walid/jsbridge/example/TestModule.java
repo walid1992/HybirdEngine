@@ -56,8 +56,14 @@ public class TestModule extends BridgeModule {
 
 //            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
 //            Log.d("TestModule", base64);
-            function.onCallBack(new JSCallData(0, "ok", "sdasdasd"));
 //            function.onCallBack(new JSCallData(0, "ok", base64.replaceAll("\n", "")));
+
+//            String data = URLEncoder.encode("Avant L'aube");
+//            data.replace("\\+", "%20");
+//            String ces = URLDecoder.decode(data);
+//            Log.e("TAG", data);
+            function.onCallBack(new JSCallData(0, "", "Avant L'*&^%$aube"));
+
         });
     }
 

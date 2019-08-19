@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        button.setOnClickListener(v -> {
-            webView.loadUrl("http://172.29.23.164:7456");
-        });
+//        button.setOnClickListener(v -> {
+//            webView.loadUrl("http://172.29.23.164:7456");
+//        });
 
         BridgeModuleManager.registerModule(webView, TestModule.class);
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 //            "VkZ0R3NKZElJRVBWVlgvZUh1NEExdz09"
 //        }]
 
-        webView.loadUrl("http://172.29.23.164:7456");
+//        webView.loadUrl("http://172.29.23.164:7456");
 
 //        webView.dispatch("planet_set_data", "[{\n" +
 //                "            \"birthday\":0, \"description\":\"\", \"gender\":\"FEMALE\", \"inExposure\":false, \"isBubble\":\n" +
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        webView.loadUrl("https://www.baidu.com");
 
-//        webView.loadUrl("file:///android_asset/demo.html");
+        webView.loadUrl("file:///android_asset/demo.html");
     }
 
     @Override

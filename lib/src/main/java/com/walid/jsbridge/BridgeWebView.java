@@ -20,6 +20,8 @@ import com.walid.jsbridge.factory.TypeModuleFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,6 +128,15 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
     }
 
     void dispatchMessage(Message m) {
+
+        try {
+            String data = m.getData();
+            data = URLEncoder.encode(data, "UTF-8");
+            data = data.replaceAll("\\+", "%20");
+            m.setData(data);
+        } catch (UnsupportedEncodingException ignored) {
+        }
+
         // no init success
         if (startupMsgs != null) {
             startupMsgs.add(m);
@@ -136,64 +147,61 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
             messageJson = messageJson.replaceAll("(?<=[^\\\\])(\")", "\\\\\"");
             String javascriptCommand = String.format(BridgeUtil.JS_HANDLE_MESSAGE_FROM_JAVA, messageJson);
             if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
-                this.loadUrl(javascriptCommand);
+                // 使用新的API替换老版本
+                this.evaluateJavascript(javascriptCommand, null);
+//                this.loadUrl(javascriptCommand);
             }
         }
     }
 
     void queryJsMessageQueue() {
-        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
-            loadUrl(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, callData -> {
-                // deserializeMessage
-                List<Message> messageList = Message.toMessageList(callData.getData());
-                for (Message m : messageList) {
-                    String responseId = m.getResponseId();
-                    if (!TextUtils.isEmpty(responseId)) {
-                        // dispatch callback
-                        IDispatchCallBack function = dispatchCallbacks.get(responseId);
-                        if (function != null) {
-                            // 读取真正数据
-                            try {
-                                JSCallData realCall = new Gson().fromJson(m.getData(), new TypeToken<JSCallData>() {
-                                }.getType());
-                                function.onCallBack(realCall);
-                            } catch (Exception e) {
-                                function.onCallBack(new JSCallData(0, "ok", m.getData()));
-                            }
-                            dispatchCallbacks.remove(responseId);
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) return;
+        this.evaluateJavascript(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, null);
+        dispatchCallbacks.put(BridgeUtil.parseFunctionName(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA), callData -> {
+            // deserializeMessage
+            List<Message> messageList = Message.toMessageList(callData.getData());
+            for (Message m : messageList) {
+                String responseId = m.getResponseId();
+                if (!TextUtils.isEmpty(responseId)) {
+                    // dispatch callback
+                    IDispatchCallBack function = dispatchCallbacks.get(responseId);
+                    if (function != null) {
+                        // 读取真正数据
+                        try {
+                            JSCallData realCall = new Gson().fromJson(m.getData(), new TypeToken<JSCallData>() {
+                            }.getType());
+                            function.onCallBack(realCall);
+                        } catch (Exception e) {
+                            function.onCallBack(new JSCallData(0, "ok", m.getData()));
                         }
-                    } else {
-                        // register callBack
-                        IDispatchCallBack responseFunc;
-                        final String callbackId = m.getCallbackId();
-                        responseFunc = respCallData -> {
-                            // none callbackId dont dispatch
-                            if (TextUtils.isEmpty(callbackId) || respCallData == null) {
-                                return;
-                            }
-                            Message responseMsg = new Message();
-                            responseMsg.setResponseId(callbackId);
-                            responseMsg.setMsg(respCallData.getMsg());
-                            responseMsg.setCode(respCallData.getCode());
-                            responseMsg.setData(TextUtils.isEmpty(respCallData.getData()) ? "" : respCallData.getData().replaceAll("\n", ""));
-                            dispatchMessage(responseMsg);
-                        };
-                        IBridgeHandler handler;
-                        if (!TextUtils.isEmpty(m.getHandlerName())) {
-                            handler = registerHandlers.get(m.getHandlerName());
-                            if (handler != null) {
-                                handler.handler(m.getParams(), responseFunc);
-                            }
+                        dispatchCallbacks.remove(responseId);
+                    }
+                } else {
+                    // register callBack
+                    IDispatchCallBack responseFunc;
+                    final String callbackId = m.getCallbackId();
+                    responseFunc = respCallData -> {
+                        // none callbackId dont dispatch
+                        if (TextUtils.isEmpty(callbackId) || respCallData == null) {
+                            return;
+                        }
+                        Message responseMsg = new Message();
+                        responseMsg.setResponseId(callbackId);
+                        responseMsg.setMsg(respCallData.getMsg());
+                        responseMsg.setCode(respCallData.getCode());
+                        responseMsg.setData(TextUtils.isEmpty(respCallData.getData()) ? "" : respCallData.getData().replaceAll("\n", ""));
+                        dispatchMessage(responseMsg);
+                    };
+                    IBridgeHandler handler;
+                    if (!TextUtils.isEmpty(m.getHandlerName())) {
+                        handler = registerHandlers.get(m.getHandlerName());
+                        if (handler != null) {
+                            handler.handler(m.getParams(), responseFunc);
                         }
                     }
                 }
-            });
-        }
-    }
-
-    public void loadUrl(String jsUrl, IDispatchCallBack returnCallback) {
-        this.loadUrl(jsUrl);
-        dispatchCallbacks.put(BridgeUtil.parseFunctionName(jsUrl), returnCallback);
+            }
+        });
     }
 
     @Override
