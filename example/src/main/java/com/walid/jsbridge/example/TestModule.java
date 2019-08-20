@@ -62,7 +62,7 @@ public class TestModule extends BridgeModule {
 //            data.replace("\\+", "%20");
 //            String ces = URLDecoder.decode(data);
 //            Log.e("TAG", data);
-            function.onCallBack(new JSCallData(0, "", "Avant L'*&^%$aube"));
+            function.onCallBack(new JSCallData(0, "", "Avant+ !L'*&^%$aube"));
 
         });
     }
