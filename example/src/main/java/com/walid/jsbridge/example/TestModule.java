@@ -1,9 +1,9 @@
 package com.walid.jsbridge.example;
 
-import android.os.Environment;
 import android.util.Base64;
-import android.util.Log;
 
+import com.google.gson.Gson;
+import com.walid.jsbridge.Bean;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModule;
@@ -51,14 +51,14 @@ public class TestModule extends BridgeModule {
     @JSMethod(alias = "doTest")
     public void oauth(BridgeWebView webView, HashMap<String, Object> map, IDispatchCallBack function) {
         webView.post(() -> {
-            Log.d("TestModule", map.toString());
-            String platform = (String) map.get("platform");
-            Log.d("TestModule", platform);
-
-            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
-            Log.d("TestModule", base64);
+//            Log.d("TestModule", map.toString());
+//            String platform = (String) map.get("platform");
+//            Log.d("TestModule", platform);
+//
+//            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
+//            Log.d("TestModule", base64);
 //        function.onCallBack(new JSCallData(0, "ok", "sdasdasd"));
-            function.onCallBack(new JSCallData(0, "ok", base64.replaceAll("\n", "")));
+            function.onCallBack(new JSCallData(0, "ok", new Gson().toJson(new Bean())));
         });
     }
 
