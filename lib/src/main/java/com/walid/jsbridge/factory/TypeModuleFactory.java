@@ -16,13 +16,13 @@ import java.util.Set;
 public class TypeModuleFactory<T extends BridgeModule> {
 
     public static final String TAG = "TypeModuleFactory";
-    private Class<T> tClass;
+    private BridgeModule module;
     private BridgeWebView bridgeWebView;
     private Map<String, Invoker> methodMap;
     private Map<String, Boolean> syncMap;
 
-    public TypeModuleFactory(Class<T> clz, final BridgeWebView bridgeWebView) {
-        this.tClass = clz;
+    public TypeModuleFactory(BridgeModule module, final BridgeWebView bridgeWebView) {
+        this.module = module;
         this.bridgeWebView = bridgeWebView;
     }
 
@@ -42,6 +42,7 @@ public class TypeModuleFactory<T extends BridgeModule> {
         String[] methods = getMethods();
         for (String jsMethod : methods) {
             Log.d("BridgeModuleManager", "register" + jsMethod);
+            BridgeModuleManager.putAPI(jsMethod);
             if (syncMap.get(jsMethod)) {
                 BridgeModuleManager.put(jsMethod, this);
                 continue;
@@ -55,7 +56,7 @@ public class TypeModuleFactory<T extends BridgeModule> {
                 }.getType());
                 try {
                     Log.d("BridgeModuleManager", "register" + jsMethod);
-                    getMethodInvoker(jsMethod).invoke(tClass.newInstance(), bridgeWebView, map, function);
+                    getMethodInvoker(jsMethod).invoke(module, bridgeWebView, map, function);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -67,8 +68,8 @@ public class TypeModuleFactory<T extends BridgeModule> {
         HashMap<String, Invoker> methodMap = new HashMap<>();
         HashMap<String, Boolean> syncMap = new HashMap<>();
         try {
-            JSMoudle jsMoudle = this.tClass.getAnnotation(JSMoudle.class);
-            Method[] methods = this.tClass.getMethods();
+            JSMoudle jsMoudle = this.module.getClass().getAnnotation(JSMoudle.class);
+            Method[] methods = this.module.getClass().getMethods();
             for (Method method : methods) {
                 JSMethod jsMethod = method.getAnnotation(JSMethod.class);
                 if (jsMethod != null) {
@@ -84,8 +85,8 @@ public class TypeModuleFactory<T extends BridgeModule> {
         this.syncMap = syncMap;
     }
 
-    public Class<T> getModuleClass() {
-        return tClass;
+    public BridgeModule getModule() {
+        return module;
     }
 
     public String[] getMethods() {

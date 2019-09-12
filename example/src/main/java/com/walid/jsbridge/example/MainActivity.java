@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //            webView.loadUrl("http://172.29.23.164:7456");
 //        });
 
-        BridgeModuleManager.registerModule(webView, TestModule.class);
+        BridgeModuleManager.registerModule(webView, new TestModule());
 
 //        String scbs = "";
 //        ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 //        ws.setAllowContentAccess(true);
 //        ws.setAllowFileAccessFromFileURLs(true);
 //        ws.setAllowUniversalAccessFromFileURLs(true);
-        BridgeModuleManager.registerModule(webView, PlanetModule.class);
+        BridgeModuleManager.registerModule(webView, new PlanetModule());
         webView.setWebViewClient(new BridgeWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("https://www.baidu.com");
 
         webView.loadUrl("file:///android_asset/demo.html");
+
+        webView.loadUrl("http://172.29.22.144:3000/example/index.html#/");
     }
 
     @Override

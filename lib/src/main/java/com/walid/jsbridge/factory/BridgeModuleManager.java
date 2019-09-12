@@ -1,9 +1,8 @@
 package com.walid.jsbridge.factory;
 
-import com.walid.jsbridge.BridgeWebView;
+import android.util.ArrayMap;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.walid.jsbridge.BridgeWebView;
 
 /**
  * Author   : walid
@@ -12,9 +11,18 @@ import java.util.Map;
  */
 public class BridgeModuleManager {
 
-    public static Map<String, TypeModuleFactory> syncMaps = new HashMap<>();
+    public static ArrayMap<String, TypeModuleFactory> syncMaps = new ArrayMap<>();
+    public static ArrayMap<String, Boolean> registerMethods = new ArrayMap<>();
 
-    public static Map<String, TypeModuleFactory> getSyncMaps() {
+    public static void putAPI(String api) {
+        registerMethods.put(api, true);
+    }
+
+    public static boolean hasAPI(String api) {
+        return registerMethods.containsKey(api);
+    }
+
+    public static ArrayMap<String, TypeModuleFactory> getSyncMaps() {
         return syncMaps;
     }
 
@@ -26,8 +34,8 @@ public class BridgeModuleManager {
         syncMaps.put(key, typeModuleFactory);
     }
 
-    public static <T extends BridgeModule> void registerModule(final BridgeWebView bridgeWebView, final Class<T> wxModuleClass) {
-        TypeModuleFactory typeModuleFactory = new TypeModuleFactory<>(wxModuleClass, bridgeWebView);
+    public static <T extends BridgeModule> void registerModule(final BridgeWebView bridgeWebView, final BridgeModule module) {
+        TypeModuleFactory typeModuleFactory = new TypeModuleFactory<>(module, bridgeWebView);
         typeModuleFactory.register();
     }
 

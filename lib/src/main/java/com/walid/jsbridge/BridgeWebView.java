@@ -220,6 +220,17 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
         @JavascriptInterface
         public String dispatchSync(String handlerName, String argStr) {
             JSONObject jsonObject = new JSONObject();
+
+            if ("action_base_canIUse".equals(handlerName)) {
+                try {
+                    jsonObject.put("code", 0);
+                    jsonObject.put("msg", "success");
+                    jsonObject.put("data", String.valueOf(BridgeModuleManager.hasAPI(handlerName)));
+                    return jsonObject.toString();
+                } catch (JSONException ignored) {
+                }
+            }
+
             try {
                 jsonObject.put("code", -1);
                 jsonObject.put("msg", "failed");
@@ -237,7 +248,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
                 jsonObject.put("code", 0);
                 jsonObject.put("msg", "success");
-                jsonObject.put("data", typeModuleFactory.getMethodInvoker(handlerName).invoke(typeModuleFactory.getModuleClass().newInstance(), BridgeWebView.this, map));
+                jsonObject.put("data", typeModuleFactory.getMethodInvoker(handlerName).invoke(typeModuleFactory.getModule(), BridgeWebView.this, map));
                 return jsonObject.toString();
             } catch (Exception ignored) {
             }
