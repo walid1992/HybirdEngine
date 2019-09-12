@@ -1,8 +1,9 @@
 package com.walid.jsbridge.example;
 
 import android.util.Base64;
-import android.util.Log;
 
+import com.google.gson.Gson;
+import com.walid.jsbridge.Bean;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModule;
@@ -63,7 +64,6 @@ public class TestModule extends BridgeModule {
 //            String ces = URLDecoder.decode(data);
 //            Log.e("TAG", data);
             function.onCallBack(new JSCallData(0, "", "Avant+ !L'*&^%$aube"));
-
         });
     }
 
