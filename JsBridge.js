@@ -24,6 +24,12 @@
    * @param req.callback 监听方法
    */
   function addEventListener(req) {
+
+    if (!req.exec && req.callback) {
+      req.exec = req.callback;
+      req.callback = null;
+    }
+
     if (!req || !req.handlerName || !req.exec) {
       return;
     }
