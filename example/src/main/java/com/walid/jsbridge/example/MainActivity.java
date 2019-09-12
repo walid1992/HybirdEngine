@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl("file:///android_asset/demo.html");
 
-        webView.loadUrl("http://172.29.22.144:3000/example/index.html#/");
+//        webView.loadUrl("http://172.29.22.144:3000/example/index.html#/");
     }
 
     @Override

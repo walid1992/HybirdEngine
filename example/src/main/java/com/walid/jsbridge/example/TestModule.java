@@ -1,9 +1,8 @@
 package com.walid.jsbridge.example;
 
 import android.util.Base64;
+import android.util.Log;
 
-import com.google.gson.Gson;
-import com.walid.jsbridge.Bean;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModule;
@@ -21,7 +20,7 @@ import java.util.HashMap;
  * Date     : 2017-09-18  16:06
  * Describe :
  */
-@JSMoudle(name = "base")
+@JSMoudle(name = "test")
 public class TestModule extends BridgeModule {
 
     /**
