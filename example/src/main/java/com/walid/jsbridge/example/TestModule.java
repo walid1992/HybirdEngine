@@ -20,7 +20,7 @@ import java.util.HashMap;
  * Date     : 2017-09-18  16:06
  * Describe :
  */
-@JSMoudle(name = "test")
+@JSMoudle(name = "page")
 public class TestModule extends BridgeModule {
 
     /**
@@ -47,7 +47,7 @@ public class TestModule extends BridgeModule {
         // 返回Base64编码过的字节数组字符串
     }
 
-    @JSMethod(alias = "doTest", sync = false)
+    @JSMethod(alias = "showNavigation", sync = false)
     public void oauth(BridgeWebView webView, HashMap<String, Object> map, IDispatchCallBack function) {
         webView.post(() -> {
             Log.d("TestModule", map.toString());

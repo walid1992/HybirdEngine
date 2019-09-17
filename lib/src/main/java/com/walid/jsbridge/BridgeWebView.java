@@ -224,8 +224,8 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
             if ("action_base_canIUse".equals(handlerName)) {
                 try {
                     jsonObject.put("code", 0);
-                    jsonObject.put("msg", "success");
-                    jsonObject.put("data", String.valueOf(BridgeModuleManager.hasAPI(handlerName)));
+                    jsonObject.put("msg", "");
+                    jsonObject.put("data", String.valueOf(BridgeModuleManager.hasAPI(new JSONObject(argStr).getString("handlerName"))));
                     return jsonObject.toString();
                 } catch (JSONException ignored) {
                 }
