@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
 
         Button button = findViewById(R.id.button);
-        button.setOnClickListener(v -> webView.dispatch("event_test_netChange", "data from Java", new IDispatchCallBack() {
+        button.setOnClickListener(v -> webView.dispatch("event_test_netChange_sdasdasdasd", "data from Java", new IDispatchCallBack() {
             @Override
             public void onCallBack(JSCallData data) {
                 Log.i(TAG, "reponse data from js " + data.getData());
@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        webView.dispatch("planet_set_data", "[{\n" +
 //                "            \"birthday\":0, \"description\":\"\", \"gender\":\"FEMALE\", \"inExposure\":false, \"isBubble\":\n" +
-//                "            false, \"matchvalue\":0.9319956, \"signature\":\"倚楼听风雨，淡看江湖路\", \"userId\":\"-1\", \"userIdEcpt\":\n" +
 //                "            \"VkZ0R3NKZElJRVBWVlgvZUh1NEExdz09\"\n" +
 //                "        }]", null);
 
@@ -92,7 +91,19 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl("file:///android_asset/demo.html");
 
-        webView.loadUrl("http://172.29.22.144:3000/example/?debug=true");
+//        webView.loadUrl("http://172.29.22.144:3000/example/?debug=true");
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            finish();
+        }
     }
 
     @Override

@@ -178,6 +178,10 @@
         }
         callbacks = eventCallbacks[msg.handlerName];
         if (!callbacks) {
+          responseCallback({
+            msg: "事件暂未注册~",
+            code: "-1"
+          });
           console.log("handlerName callbacks is empty ...");
           return;
         }
