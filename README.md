@@ -8,7 +8,7 @@ Android and JS communication~
 
 ```
 	dependencies {
-	    implementation 'com.walid:jsbridge:1.0.8'
+	    implementation 'com.walid:jsbridge:1.0.10'
 	}
 ```
 

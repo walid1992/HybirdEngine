@@ -6,7 +6,7 @@ publish {
     artifactId = 'jsbridge'
     userOrg = 'walid1992'
     groupId = 'com.walid'
-    publishVersion = "1.0.9"
+    publishVersion = "1.0.10"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
 }
