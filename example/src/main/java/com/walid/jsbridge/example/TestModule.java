@@ -14,13 +14,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author   : walid
  * Date     : 2017-09-18  16:06
  * Describe :
  */
-@JSMoudle(name = "page")
+@JSMoudle(name = "test")
 public class TestModule extends BridgeModule {
 
     /**
@@ -47,12 +48,12 @@ public class TestModule extends BridgeModule {
         // 返回Base64编码过的字节数组字符串
     }
 
-    @JSMethod(alias = "showNavigation", sync = false)
-    public void oauth(BridgeWebView webView, HashMap<String, Object> map, IDispatchCallBack function) {
+    @JSMethod(alias = "doTest", sync = false)
+    public void oauth(BridgeWebView webView, Map<String, Object> map, IDispatchCallBack function) {
         webView.post(() -> {
             Log.d("TestModule", map.toString());
-            String platform = (String) map.get("platform");
-            Log.d("TestModule", platform);
+            double platform = (double) map.get("platform");
+            Log.d("TestModule", platform + "");
 
 //            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
 //            Log.d("TestModule", base64);
@@ -62,7 +63,9 @@ public class TestModule extends BridgeModule {
 //            data.replace("\\+", "%20");
 //            String ces = URLDecoder.decode(data);
 //            Log.e("TAG", data);
-            function.onCallBack(new JSCallData(0, "", "Avant+ !L'*&^%$aube"));
+
+            String a = "%%%";
+            function.onCallBack(new JSCallData(0, "", a));
         });
     }
 

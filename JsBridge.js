@@ -151,7 +151,7 @@
           return;
         }
         responseCallback({
-          data: decodeURIComponent(data),
+          data: (typeof data ==	'string') ? decodeURIComponent(data) : data,
           msg: msg.msg,
           code: msg.code
         });
@@ -187,7 +187,7 @@
         }
         callbacks.forEach(function (item) {
           item({
-            data: decodeURIComponent(data),
+            data: (typeof data == 'string') ? decodeURIComponent(data) : data,
             msg: msg.msg,
             code: msg.code
           }, responseCallback);

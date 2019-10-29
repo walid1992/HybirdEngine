@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
 
         Button button = findViewById(R.id.button);
-        button.setOnClickListener(v -> webView.dispatch("event_test_netChange_sdasdasdasd", "data from Java", new IDispatchCallBack() {
+        button.setOnClickListener(v -> webView.dispatch("event_test_netChange", "data from Java", new IDispatchCallBack() {
             @Override
             public void onCallBack(JSCallData data) {
                 Log.i(TAG, "reponse data from js " + data.getData());
