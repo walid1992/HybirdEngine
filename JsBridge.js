@@ -137,6 +137,7 @@
     setTimeout(function () {
       var msg = JSON.parse(messageJSON);
       var responseCallback;
+      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(data) : data;
       var data;
       try {
         data = JSON.parse(msg.data);
@@ -151,7 +152,7 @@
           return;
         }
         responseCallback({
-          data: (typeof data ==	'string') ? decodeURIComponent(data) : data,
+          data: data,
           msg: msg.msg,
           code: msg.code
         });
@@ -187,7 +188,7 @@
         }
         callbacks.forEach(function (item) {
           item({
-            data: (typeof data == 'string') ? decodeURIComponent(data) : data,
+            data: data,
             msg: msg.msg,
             code: msg.code
           }, responseCallback);
