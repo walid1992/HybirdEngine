@@ -40,14 +40,14 @@
 
   function addEvent() {
     window.AEJSBridge.addEventListener({
-      handlerName: 'event_test_netChange',
+      handlerName: 'action_page_onNavigationRightClick',
       exec: func
     });
   }
 
   function removeEvent() {
     window.AEJSBridge.removeEventListener({
-      handlerName: 'event_test_netChange',
+      handlerName: 'action_page_onNavigationRightClick',
       exec: func,
       callback: function (respData) {
         document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)

@@ -2,7 +2,6 @@ package com.walid.jsbridge.example;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 
 import com.tencent.smtt.sdk.WebSettings;
@@ -26,12 +25,15 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
 
         Button button = findViewById(R.id.button);
-        button.setOnClickListener(v -> webView.dispatch("event_test_netChange", "data from Java", new IDispatchCallBack() {
-            @Override
-            public void onCallBack(JSCallData data) {
-                Log.i(TAG, "reponse data from js " + data.getData());
-            }
-        }));
+        button.setOnClickListener(v -> {
+            webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+            webView.dispatch("action_page_onNavigationRightClick", "data from Java", new IDispatchCallBack() {
+                @Override
+                public void onCallBack(JSCallData callData) {
+
+                }
+            });
+        });
 
 //        button.setOnClickListener(v -> {
 //            webView.loadUrl("http://172.29.23.164:7456");
@@ -74,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        webView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                webView.dispatch("action_page_onNavigationRightClick", "sadasdasdas", null);
+                webView.dispatch("action_page_onNavigationRightClick", "sadasdasdas", null);
+            }
+        }, 200);
+
 //        [{
 //            "birthday":0, "description":"", "gender":"FEMALE", "inExposure":false, "isBubble":
 //            false, "matchvalue":0.9319956, "signature":"倚楼听风雨，淡看江湖路", "userId":"-1", "userIdEcpt":
@@ -90,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("https://www.baidu.com");
 
         webView.loadUrl("file:///android_asset/demo.html");
-
-//        webView.loadUrl("http://172.29.22.144:3000/example/?debug=true");
+        webView.loadUrl("http://172.29.22.144:3000/example/page?debug=true");
 
 
     }
