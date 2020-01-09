@@ -21,7 +21,7 @@ import java.util.Map;
  * Date     : 2017-09-18  16:06
  * Describe :
  */
-@JSMoudle(name = "test")
+@JSMoudle(name = "app")
 public class TestModule extends BridgeModule {
 
     /**
@@ -69,9 +69,9 @@ public class TestModule extends BridgeModule {
         });
     }
 
-    @JSMethod(alias = "canIUse", sync = true)
+    @JSMethod(alias = "getVersion", sync = true)
     public String testSync(BridgeWebView webView, HashMap<String, Object> map) {
-        return "00000000000";
+        return "3.10.20";
     }
 
 }

@@ -35,7 +35,6 @@ import java.util.Map;
 @SuppressLint("SetJavaScriptEnabled")
 public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
-    public static final String LOCAL_JSFile = "JsBridge.js";
     private static final int APP_CACHE_MAX_SIZE = 1024 * 1024 * 8;
     private Map<String, IDispatchCallBack> dispatchCallbacks = new HashMap<>();
     private Map<String, IBridgeHandler> registerHandlers = new HashMap<>();
@@ -212,7 +211,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     @Override
     public void destroy() {
-        BridgeModuleManager.clear();
+//        BridgeModuleManager.clear();
         super.destroy();
     }
 

@@ -14,6 +14,8 @@ import com.walid.jsbridge.factory.JSCallData;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static boolean has = false;
+
     private final String TAG = "MainActivity";
     private BridgeWebView webView;
 
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 //        ws.setAllowFileAccessFromFileURLs(true);
 //        ws.setAllowUniversalAccessFromFileURLs(true);
         BridgeModuleManager.registerModule(webView, new PlanetModule());
+        BridgeModuleManager.registerModule(webView, new RouterModule());
         webView.setWebViewClient(new BridgeWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -100,9 +103,11 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("https://www.baidu.com");
 
         webView.loadUrl("file:///android_asset/demo.html");
-        webView.loadUrl("http://172.29.22.144:3000/example/page?debug=true");
 
-
+        if (!has) {
+            webView.loadUrl("http://172.29.22.144:8081/#/coin/bonus?debug=true");
+            has = true;
+        }
     }
 
     @Override
