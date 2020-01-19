@@ -104,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl("file:///android_asset/demo.html");
 
-        if (!has) {
-            webView.loadUrl("http://172.29.22.144:8081/#/coin/bonus?debug=true");
-            has = true;
-        }
+//        if (!has) {
+//            webView.loadUrl("http://172.29.22.144:8081/#/coin/bonus?debug=true");
+//            has = true;
+//        }
     }
 
     @Override
