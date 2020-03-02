@@ -6,7 +6,7 @@ publish {
     artifactId = 'jsbridge'
     userOrg = 'walid1992'
     groupId = 'com.walid'
-    publishVersion = "1.0.14"
+    publishVersion = "1.1.0"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
 }
@@ -36,5 +36,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.google.code.gson:gson:2.8.5'
-    api 'com.tencent.tbs.tbssdk:sdk:43697'
+//    api 'com.tencent.tbs.tbssdk:sdk:43697'
 }

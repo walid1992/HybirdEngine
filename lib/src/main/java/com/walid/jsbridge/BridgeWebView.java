@@ -9,10 +9,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.smtt.sdk.WebView;
 import com.walid.jsbridge.factory.BridgeModuleManager;
 import com.walid.jsbridge.factory.JSCallData;
 import com.walid.jsbridge.factory.TypeModuleFactory;

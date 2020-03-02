@@ -1,8 +1,7 @@
 package com.walid.jsbridge;
 
 import android.content.Context;
-
-import com.tencent.smtt.sdk.WebView;
+import android.webkit.WebView;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -2,10 +2,10 @@ package com.walid.jsbridge.example;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.BridgeWebViewClient;
 import com.walid.jsbridge.IDispatchCallBack;
