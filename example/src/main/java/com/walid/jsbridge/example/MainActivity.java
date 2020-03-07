@@ -79,14 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        webView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                webView.dispatch("action_page_onNavigationRightClick", "sadasdasdas", null);
-                webView.dispatch("action_page_onNavigationRightClick", "sadasdasdas", null);
-            }
-        }, 200);
-
 //        [{
 //            "birthday":0, "description":"", "gender":"FEMALE", "inExposure":false, "isBubble":
 //            false, "matchvalue":0.9319956, "signature":"倚楼听风雨，淡看江湖路", "userId":"-1", "userIdEcpt":

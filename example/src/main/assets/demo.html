@@ -10,6 +10,7 @@
 <div>
     <xmp id="show"></xmp>
 </div>
+<img src="https://www.w3school.com.cn/i/eg_tulip.jpg"/>
 <p>
     <input type="button" id="enter1" value="添加 event 事件" onclick="addEvent();"/>
 </p>
@@ -61,7 +62,7 @@
     // 分发异步方法
     window.AEJSBridge.dispatch({
       handlerName: 'action_test_doTest',
-      params: {'platform': 1},
+      params: {'platform': 1,'bytes': [8,0]},
       callback: function (respData) {
         document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
       }

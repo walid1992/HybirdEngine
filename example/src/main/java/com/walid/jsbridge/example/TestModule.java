@@ -13,7 +13,10 @@ import com.walid.jsbridge.factory.JSMoudle;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +24,7 @@ import java.util.Map;
  * Date     : 2017-09-18  16:06
  * Describe :
  */
-@JSMoudle(name = "app")
+@JSMoudle(name = "test")
 public class TestModule extends BridgeModule {
 
     /**
@@ -48,11 +51,34 @@ public class TestModule extends BridgeModule {
         // 返回Base64编码过的字节数组字符串
     }
 
+    /**
+     * 方法1，使用for循环
+     *
+     * @param list 将被转换为byte[]的List<Byte>
+     * @return 转换成的byte数组
+     */
+    private static byte[] list2bytes(List<Double> list) {
+        if (list == null) return null;
+        byte[] bytes = new byte[list.size()];
+        int i = 0;
+        for (double aByte : list) {
+            bytes[i] = (byte) aByte;
+            i++;
+        }
+        return bytes;
+    }
+
     @JSMethod(alias = "doTest", sync = false)
     public void oauth(BridgeWebView webView, Map<String, Object> map, IDispatchCallBack function) {
         webView.post(() -> {
             Log.d("TestModule", map.toString());
+
             double platform = (double) map.get("platform");
+
+            List<Double> list = new ArrayList<>((Collection<? extends Double>) map.get("bytes"));
+
+            byte[] bytes = list2bytes(list);
+
             Log.d("TestModule", platform + "");
 
 //            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");
