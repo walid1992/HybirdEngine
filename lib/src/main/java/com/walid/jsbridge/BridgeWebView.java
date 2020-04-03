@@ -147,7 +147,9 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
             String javascriptCommand = String.format(BridgeUtil.JS_HANDLE_MESSAGE_FROM_JAVA, messageJson);
             if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
                 // 使用新的API替换老版本
-                this.evaluateJavascript(javascriptCommand, null);
+                this.evaluateJavascript(javascriptCommand, s -> {
+                    Log.d("TAG", "valueCallback:" + s);
+                });
 //                this.loadUrl(javascriptCommand);
             }
         }

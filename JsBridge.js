@@ -79,7 +79,7 @@
    * @param req.callback 回调函数 (function)
    */
   function dispatch(req) {
-    console.log("dispatch：" + req);
+    console.log("dispatch：" + JSON.stringify(req));
     if (!req || !req.handlerName) {
       return;
     }
@@ -114,6 +114,7 @@
   // 提供给native调用,该函数作用:获取untreatedDispatchMsgs返回给native,由于android不能直接获取返回的内容,所以使用url shouldOverrideUrlLoading 的方式返回内容
   function _fetchQueue() {
     var messageQueueString = JSON.stringify(untreatedDispatchMsgs);
+    console.log("_fetchQueue：" + messageQueueString);
     untreatedDispatchMsgs = [];
     // android can't read directly the return data, so we can reload iframe src to communicate with java
     bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);

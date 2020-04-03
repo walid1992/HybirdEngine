@@ -8,6 +8,8 @@ import com.tencent.smtt.sdk.WebViewClient;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author : walid
@@ -82,11 +84,12 @@ public class BridgeWebViewClient extends WebViewClient {
                 "   * @param req.callback 监听方法\n" +
                 "   */\n" +
                 "  function addEventListener(req) {\n" +
-                "    console.log(\"addEventListener:\" + req.handlerName);\n" +
+                "\n" +
                 "    if (!req.exec && req.callback) {\n" +
                 "      req.exec = req.callback;\n" +
                 "      req.callback = null;\n" +
                 "    }\n" +
+                "\n" +
                 "    if (!req || !req.handlerName || !req.exec) {\n" +
                 "      return;\n" +
                 "    }\n" +
@@ -136,7 +139,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "   * @param req.callback 回调函数 (function)\n" +
                 "   */\n" +
                 "  function dispatch(req) {\n" +
-                "    console.log(\"dispatch：\" + req);\n" +
+                "    console.log(\"dispatch：\" + JSON.stringify(req));\n" +
                 "    if (!req || !req.handlerName) {\n" +
                 "      return;\n" +
                 "    }\n" +
@@ -160,7 +163,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    }\n" +
                 "    console.log(JSON.stringify(req.params));\n" +
                 "    var res = (AEJSBridgeSync.dispatchSync(req.handlerName, JSON.stringify(req.params)));\n" +
-                "//    console.log(res);\n" +
+                "    console.log(res);\n" +
                 "    try {\n" +
                 "      return JSON.parse(res);\n" +
                 "    } catch (e) {\n" +
@@ -171,6 +174,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "  // 提供给native调用,该函数作用:获取untreatedDispatchMsgs返回给native,由于android不能直接获取返回的内容,所以使用url shouldOverrideUrlLoading 的方式返回内容\n" +
                 "  function _fetchQueue() {\n" +
                 "    var messageQueueString = JSON.stringify(untreatedDispatchMsgs);\n" +
+                "    console.log(\"_fetchQueue：\" + messageQueueString);\n" +
                 "    untreatedDispatchMsgs = [];\n" +
                 "    // android can't read directly the return data, so we can reload iframe src to communicate with java\n" +
                 "    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);\n" +
@@ -194,8 +198,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    setTimeout(function () {\n" +
                 "      var msg = JSON.parse(messageJSON);\n" +
                 "      var responseCallback;\n" +
-                "//      console.log(msg.data);\n" +
-                "      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(msg.data) : msg.data;\n" +
+                "      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(data) : data;\n" +
                 "      var data;\n" +
                 "      try {\n" +
                 "        data = JSON.parse(msg.data);\n" +
@@ -237,13 +240,11 @@ public class BridgeWebViewClient extends WebViewClient {
                 "        }\n" +
                 "        callbacks = eventCallbacks[msg.handlerName];\n" +
                 "        if (!callbacks) {\n" +
-                "          console.log(msg.handlerName + \": callbacks is empty ...\");\n" +
-                "          if(responseCallback) {\n" +
-                "            responseCallback({\n" +
-                "              msg: \"事件暂未注册~\",\n" +
-                "              code: \"-1\"\n" +
-                "            });\n" +
-                "          }\n" +
+                "          responseCallback({\n" +
+                "            msg: \"事件暂未注册~\",\n" +
+                "            code: \"-1\"\n" +
+                "          });\n" +
+                "          console.log(\"handlerName callbacks is empty ...\");\n" +
                 "          return;\n" +
                 "        }\n" +
                 "        callbacks.forEach(function (item) {\n" +
@@ -281,16 +282,20 @@ public class BridgeWebViewClient extends WebViewClient {
 
         // 删除旧的桥接加载库
 //        BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.LOCAL_JSFile);
-        if (webView.getStartupMsgs() != null) {
-            for (Message m : webView.getStartupMsgs()) {
-                webView.dispatchMessage(m);
-            }
-            webView.setStartupMsgs(null);
+
+        List<Message> messageList = webView.getStartupMsgs();
+        webView.setStartupMsgs(null);
+        if (messageList == null || messageList.size() <= 0) return;
+        List<Message> copy = new ArrayList<>(messageList);
+        for (Message m : copy) {
+            webView.dispatchMessage(m);
         }
+
     }
 
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
     }
+
 }

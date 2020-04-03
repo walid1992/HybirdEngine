@@ -3,6 +3,7 @@ package com.walid.jsbridge.example;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModule;
@@ -13,10 +14,7 @@ import com.walid.jsbridge.factory.JSMoudle;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,11 +55,11 @@ public class TestModule extends BridgeModule {
      * @param list 将被转换为byte[]的List<Byte>
      * @return 转换成的byte数组
      */
-    private static byte[] list2bytes(List<Double> list) {
+    private static byte[] list2bytes(Map<String, Double> list) {
         if (list == null) return null;
         byte[] bytes = new byte[list.size()];
         int i = 0;
-        for (double aByte : list) {
+        for (double aByte : list.values()) {
             bytes[i] = (byte) aByte;
             i++;
         }
@@ -75,9 +73,10 @@ public class TestModule extends BridgeModule {
 
             double platform = (double) map.get("platform");
 
-            List<Double> list = new ArrayList<>((Collection<? extends Double>) map.get("bytes"));
-
-            byte[] bytes = list2bytes(list);
+            Object data = map.get("data");
+            if (data instanceof LinkedTreeMap) {
+                data = list2bytes((Map<String, Double>) data);
+            }
 
             Log.d("TestModule", platform + "");
 
