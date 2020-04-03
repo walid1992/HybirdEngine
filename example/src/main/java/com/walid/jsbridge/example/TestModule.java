@@ -3,6 +3,7 @@ package com.walid.jsbridge.example;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModule;
@@ -21,7 +22,7 @@ import java.util.Map;
  * Date     : 2017-09-18  16:06
  * Describe :
  */
-@JSMoudle(name = "app")
+@JSMoudle(name = "test")
 public class TestModule extends BridgeModule {
 
     /**
@@ -48,11 +49,35 @@ public class TestModule extends BridgeModule {
         // 返回Base64编码过的字节数组字符串
     }
 
+    /**
+     * 方法1，使用for循环
+     *
+     * @param list 将被转换为byte[]的List<Byte>
+     * @return 转换成的byte数组
+     */
+    private static byte[] list2bytes(Map<String, Double> list) {
+        if (list == null) return null;
+        byte[] bytes = new byte[list.size()];
+        int i = 0;
+        for (double aByte : list.values()) {
+            bytes[i] = (byte) aByte;
+            i++;
+        }
+        return bytes;
+    }
+
     @JSMethod(alias = "doTest", sync = false)
     public void oauth(BridgeWebView webView, Map<String, Object> map, IDispatchCallBack function) {
         webView.post(() -> {
             Log.d("TestModule", map.toString());
+
             double platform = (double) map.get("platform");
+
+            Object data = map.get("data");
+            if (data instanceof LinkedTreeMap) {
+                data = list2bytes((Map<String, Double>) data);
+            }
+
             Log.d("TestModule", platform + "");
 
 //            String base64 = ImageToBase64ByLocal(Environment.getExternalStorageDirectory() + "/Soul.jpg");

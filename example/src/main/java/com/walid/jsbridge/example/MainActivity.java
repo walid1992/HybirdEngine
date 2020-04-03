@@ -8,9 +8,7 @@ import android.widget.Button;
 
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.BridgeWebViewClient;
-import com.walid.jsbridge.IDispatchCallBack;
 import com.walid.jsbridge.factory.BridgeModuleManager;
-import com.walid.jsbridge.factory.JSCallData;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,13 +25,12 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
 
         Button button = findViewById(R.id.button);
+
+
         button.setOnClickListener(v -> {
             webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
-            webView.dispatch("action_page_onNavigationRightClick", "data from Java", new IDispatchCallBack() {
-                @Override
-                public void onCallBack(JSCallData callData) {
+            webView.dispatch("action_page_onNavigationRightClick", "data from Java", callData -> {
 
-                }
             });
         });
 
@@ -64,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
         // 解决 XMLHttpRequest cannot load file from android asset folder
         WebSettings ws = webView.getSettings();
-//        ws.setJavaScriptEnabled(true);
-//        ws.setPluginState(WebSettings.PluginState.ON);
-//        ws.setAllowFileAccess(true);
-//        ws.setAllowContentAccess(true);
-//        ws.setAllowFileAccessFromFileURLs(true);
-//        ws.setAllowUniversalAccessFromFileURLs(true);
+        ws.setJavaScriptEnabled(true);
+        ws.setPluginState(WebSettings.PluginState.ON);
+        ws.setAllowFileAccess(true);
+        ws.setAllowContentAccess(true);
+        ws.setAllowFileAccessFromFileURLs(true);
+        ws.setAllowUniversalAccessFromFileURLs(true);
         BridgeModuleManager.registerModule(webView, new PlanetModule());
         BridgeModuleManager.registerModule(webView, new RouterModule());
         webView.setWebViewClient(new BridgeWebViewClient(webView) {
@@ -78,14 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
-
-        webView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                webView.dispatch("action_page_onNavigationRightClick", "sadasdasdas", null);
-                webView.dispatch("action_page_onNavigationRightClick", "sadasdasdas", null);
-            }
-        }, 200);
 
 //        [{
 //            "birthday":0, "description":"", "gender":"FEMALE", "inExposure":false, "isBubble":
@@ -103,6 +92,29 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("https://www.baidu.com");
 
         webView.loadUrl("file:///android_asset/demo.html");
+
+//        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+//        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+//        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+//        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+//        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
+//
+//        webView.postDelayed(() -> webView.dispatch("action_page_onNavigationRightClick", "data from Java", null), 200);
+
+//        webView.postDelayed(() -> webView.dispatch("action_page_onNavigationRightClick", "data from Java", null), 200);
+
+//        webView.loadUrl("file:///android_asset/web-mobile/index.html?userId=1165302&roomId=1000022");
+
+//        if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/browser/web-mobile/web-mobile/index.html").exists()) {
+//
+//        }
+//
+//        webView.loadUrl("file:///" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/browser/web-mobile/web-mobile/index.html");
 
 //        if (!has) {
 //            webView.loadUrl("http://172.29.22.144:8081/#/coin/bonus?debug=true");

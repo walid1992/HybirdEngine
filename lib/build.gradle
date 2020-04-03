@@ -3,10 +3,10 @@ apply plugin: 'com.novoda.bintray-release'
 
 // jcenter 上传配置
 publish {
-    artifactId = 'jsbridge'
+    artifactId = 'jsbridge-google'
     userOrg = 'walid1992'
     groupId = 'com.walid'
-    publishVersion = "1.1.0"
+    publishVersion = "1.1.1"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
 }
