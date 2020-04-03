@@ -198,7 +198,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    setTimeout(function () {\n" +
                 "      var msg = JSON.parse(messageJSON);\n" +
                 "      var responseCallback;\n" +
-                "      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(data) : data;\n" +
+                "      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(msg.data) : msg.data;\n" +
                 "      var data;\n" +
                 "      try {\n" +
                 "        data = JSON.parse(msg.data);\n" +

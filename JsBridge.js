@@ -138,7 +138,7 @@
     setTimeout(function () {
       var msg = JSON.parse(messageJSON);
       var responseCallback;
-      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(data) : data;
+      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(msg.data) : msg.data;
       var data;
       try {
         data = JSON.parse(msg.data);
