@@ -36,7 +36,7 @@ public class BridgeWebViewClient extends WebViewClient {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
+        BridgeUtil.log(webView, "shouldOverrideUrlLoading:" + url);
         // if return data
         if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) {
             webView.handleJsMessageData(url);
@@ -155,7 +155,9 @@ public class BridgeWebViewClient extends WebViewClient {
                 "      req.callbackId = callbackId;\n" +
                 "    }\n" +
                 "    untreatedDispatchMsgs.push(req);\n" +
-                "    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;\n" +
+                "    console.log(AEJSBridgeSync);\n" +
+                "    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE);\n" +
+                "//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;\n" +
                 "  }\n" +
                 "\n" +
                 "  /**\n" +
@@ -183,7 +185,8 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    console.log(\"_fetchQueue：\" + messageQueueString);\n" +
                 "    untreatedDispatchMsgs = [];\n" +
                 "    // android can't read directly the return data, so we can reload iframe src to communicate with java\n" +
-                "    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);\n" +
+                "    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString));\n" +
+                "//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);\n" +
                 "  }\n" +
                 "\n" +
                 "  /**\n" +

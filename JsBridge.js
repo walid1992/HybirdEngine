@@ -95,7 +95,9 @@
       req.callbackId = callbackId;
     }
     untreatedDispatchMsgs.push(req);
-    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
+    console.log(AEJSBridgeSync);
+    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE);
+//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
   }
 
   /**
@@ -123,7 +125,8 @@
     console.log("_fetchQueue：" + messageQueueString);
     untreatedDispatchMsgs = [];
     // android can't read directly the return data, so we can reload iframe src to communicate with java
-    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);
+    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString));
+//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);
   }
 
   /**
