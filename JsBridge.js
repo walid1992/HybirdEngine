@@ -37,11 +37,11 @@
       eventCallbacks[req.handlerName] = [];
     }
     eventCallbacks[req.handlerName].push(req.exec);
-    if(req.callback) {
-        req.callback({
-          msg: 'add success ~',
-          code: 0
-        });
+    if (req.callback) {
+      req.callback({
+        msg: 'add success ~',
+        code: 0
+      });
     }
   }
 
@@ -64,11 +64,11 @@
         break;
       }
     }
-    if(req.callback) {
-        req.callback({
-          msg: delSuccess ? 'delete success ~' : 'delete failed ~',
-          code: delSuccess ? 0 : -1
-        });
+    if (req.callback) {
+      req.callback({
+        msg: delSuccess ? 'delete success ~' : 'delete failed ~',
+        code: delSuccess ? 0 : -1
+      });
     }
   }
 
@@ -82,6 +82,12 @@
     console.log("dispatch：" + JSON.stringify(req));
     if (!req || !req.handlerName) {
       return;
+    }
+
+    if (!req.callback) {
+      // TODO 增加默认数据
+      req.callback = function (respData) {
+      }
     }
     if (req.callback) {
       var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();
@@ -150,8 +156,10 @@
       if (msg.responseId) {
         responseCallback = dispatchCallbacks[msg.responseId];
         if (!responseCallback) {
+          console.log('responseCallback is empty~');
           return;
         }
+        console.log('responseCallback responseId:' + msg.responseId);
         responseCallback({
           data: data,
           msg: msg.msg,

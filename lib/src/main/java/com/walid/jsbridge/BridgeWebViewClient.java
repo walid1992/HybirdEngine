@@ -97,11 +97,11 @@ public class BridgeWebViewClient extends WebViewClient {
                 "      eventCallbacks[req.handlerName] = [];\n" +
                 "    }\n" +
                 "    eventCallbacks[req.handlerName].push(req.exec);\n" +
-                "    if(req.callback) {\n" +
-                "        req.callback({\n" +
-                "          msg: 'add success ~',\n" +
-                "          code: 0\n" +
-                "        });\n" +
+                "    if (req.callback) {\n" +
+                "      req.callback({\n" +
+                "        msg: 'add success ~',\n" +
+                "        code: 0\n" +
+                "      });\n" +
                 "    }\n" +
                 "  }\n" +
                 "\n" +
@@ -124,11 +124,11 @@ public class BridgeWebViewClient extends WebViewClient {
                 "        break;\n" +
                 "      }\n" +
                 "    }\n" +
-                "    if(req.callback) {\n" +
-                "        req.callback({\n" +
-                "          msg: delSuccess ? 'delete success ~' : 'delete failed ~',\n" +
-                "          code: delSuccess ? 0 : -1\n" +
-                "        });\n" +
+                "    if (req.callback) {\n" +
+                "      req.callback({\n" +
+                "        msg: delSuccess ? 'delete success ~' : 'delete failed ~',\n" +
+                "        code: delSuccess ? 0 : -1\n" +
+                "      });\n" +
                 "    }\n" +
                 "  }\n" +
                 "\n" +
@@ -142,6 +142,12 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    console.log(\"dispatch：\" + JSON.stringify(req));\n" +
                 "    if (!req || !req.handlerName) {\n" +
                 "      return;\n" +
+                "    }\n" +
+                "\n" +
+                "    if (!req.callback) {\n" +
+                "      // TODO 增加默认数据\n" +
+                "      req.callback = function (respData) {\n" +
+                "      }\n" +
                 "    }\n" +
                 "    if (req.callback) {\n" +
                 "      var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();\n" +
@@ -210,8 +216,10 @@ public class BridgeWebViewClient extends WebViewClient {
                 "      if (msg.responseId) {\n" +
                 "        responseCallback = dispatchCallbacks[msg.responseId];\n" +
                 "        if (!responseCallback) {\n" +
+                "          console.log('responseCallback is empty~');\n" +
                 "          return;\n" +
                 "        }\n" +
+                "        console.log('responseCallback responseId:' + msg.responseId);\n" +
                 "        responseCallback({\n" +
                 "          data: data,\n" +
                 "          msg: msg.msg,\n" +

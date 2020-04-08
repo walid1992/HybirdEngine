@@ -1,28 +1,28 @@
 <html>
 <head>
-    <meta content="text/html; charset=utf-8" http-equiv="content-type">
-    <script src="text.txt" charset="utf-8"></script>
-    <title>
-        js调用java
-    </title>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <script src="text.txt" charset="utf-8"></script>
+  <title>
+    js调用java
+  </title>
 </head>
 
 <body>
 <div>
-    <xmp id="show"></xmp>
+  <xmp id="show"></xmp>
 </div>
 <img src="https://www.w3school.com.cn/i/eg_tulip.jpg"/>
 <p>
-    <input type="button" id="enter1" value="添加 event 事件" onclick="addEvent();"/>
+  <input type="button" id="enter1" value="添加 event 事件" onclick="addEvent();"/>
 </p>
 <p>
-    <input type="button" id="enter2" value="移除 event 事件" onclick="removeEvent();"/>
+  <input type="button" id="enter2" value="移除 event 事件" onclick="removeEvent();"/>
 </p>
 <p>
-    <input type="button" id="enter3" value="分发事件" onclick="dispatch();"/>
+  <input type="button" id="enter3" value="分发事件" onclick="dispatch();"/>
 </p>
 <p>
-    <input type="button" id="enter4" value="显示html" onclick="showHtml();"/>
+  <input type="button" id="enter4" value="显示html" onclick="showHtml();"/>
 </p>
 </body>
 
@@ -61,74 +61,154 @@
     // 分发同步方法
     // document.getElementById("show").innerHTML = "params from Java: = " + (window.AEJSBridge.dispatchSync({handlerName:"action_test_doTestSync",params:{'walid':12345}})).data;
     // 分发异步方法
+
+    setTimeout(function () {
+      window.AEJSBridge.dispatch({
+        handlerName: 'action_test_doTest',
+        params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+        callback: function (respData) {
+          document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+        }
+      });
+    });
+
+    setTimeout(function () {
+      window.AEJSBridge.dispatch({
+        handlerName: 'action_test_doTest',
+        params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+        callback: function (respData) {
+          document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+        }
+      });
+    });
+
+    setTimeout(function () {
+      window.AEJSBridge.dispatch({
+        handlerName: 'action_test_doTest',
+        params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+        callback: function (respData) {
+          document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+        }
+      });
+    });
+
+    setTimeout(function () {
+      window.AEJSBridge.dispatch({
+        handlerName: 'action_test_doTest',
+        params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+        callback: function (respData) {
+          document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+        }
+      });
+      window.AEJSBridge.dispatch({
+        handlerName: 'action_test_doTest',
+        params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+        callback: function (respData) {
+          document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+        }
+      });
+
+      window.AEJSBridge.dispatch({
+        handlerName: 'action_test_doTest',
+        params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+        callback: function (respData) {
+          document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+        }
+      });
+    }, 200);
+
     window.AEJSBridge.dispatch({
       handlerName: 'action_test_doTest',
-      params: {'platform': 1,'data': new Uint8Array([8,0])},
+      params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+      }
+    });
+
+    window.AEJSBridge.dispatch({
+      handlerName: 'action_test_doTest',
+      params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+      }
+    });
+
+    window.AEJSBridge.dispatch({
+      handlerName: 'action_test_doTest',
+      params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+      }
+    });
+
+    window.AEJSBridge.dispatch({
+      handlerName: 'action_test_doTest',
+      params: {'platform': 1, 'data': new Uint8Array([8, 0])},
+      callback: function (respData) {
+        document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
+      }
+    });
+
+    window.AEJSBridge.dispatch({
+      handlerName: 'action_test_doTest',
+      params: {'platform': 1, 'data': new Uint8Array([8, 0])},
       callback: function (respData) {
         document.getElementById("show").innerHTML = "send get responseData from java, params = " + JSON.stringify(respData)
       }
     });
   }
 
-  function WebSocketTest()
-         {
-            if ("WebSocket" in window)
-            {
-               alert("您的浏览器支持 WebSocket!");
+  function WebSocketTest() {
+    if ("WebSocket" in window) {
+      alert("您的浏览器支持 WebSocket!");
 
-               // 打开一个 web socket
-               var ws = new WebSocket("ws://172.16.217.84:8088/ws");
+      // 打开一个 web socket
+      var ws = new WebSocket("ws://172.16.217.84:8088/ws");
 
-               ws.onopen = function()
-               {
-               document.getElementById("show").innerHTML = 'Web Socket 已连接上，使用 send() 方法发送数据'
-               console.log('Web Socket 已连接上，使用 send() 方法发送数据')
-                  // Web Socket 已连接上，使用 send() 方法发送数据
-                  ws.send("发送数据");
-                  alert("数据发送中...");
-               };
+      ws.onopen = function () {
+        document.getElementById("show").innerHTML = 'Web Socket 已连接上，使用 send() 方法发送数据'
+        console.log('Web Socket 已连接上，使用 send() 方法发送数据')
+        // Web Socket 已连接上，使用 send() 方法发送数据
+        ws.send("发送数据");
+        alert("数据发送中...");
+      };
 
-               ws.onmessage = function (evt)
-               {
-                  var received_msg = evt.data;
-                  alert("数据已接收...");
-               };
+      ws.onmessage = function (evt) {
+        var received_msg = evt.data;
+        alert("数据已接收...");
+      };
 
-               ws.onclose = function()
-               {
-                  // 关闭 websocket
-                  alert("连接已关闭...");
-               };
-            }
+      ws.onclose = function () {
+        // 关闭 websocket
+        alert("连接已关闭...");
+      };
+    } else {
+      // 浏览器不支持 WebSocket
+      alert("您的浏览器不支持 WebSocket!");
+    }
+  }
 
-            else
-            {
-               // 浏览器不支持 WebSocket
-               alert("您的浏览器不支持 WebSocket!");
-            }
-         }
+  WebSocketTest();
 
-         WebSocketTest();
+  console.log('location:' + location.origin)
+  console.log('location:' + location.pathname)
+  console.log('location:' + location.host)
 
-         console.log('location:'+ location.origin)
-         console.log('location:'+ location.pathname)
-         console.log('location:'+ location.host)
+  // window.location.href  = location.href.substring(0, location.href.lastIndexOf('/')) + '/web-mobile/index.html'
 
-       // window.location.href  = location.href.substring(0, location.href.lastIndexOf('/')) + '/web-mobile/index.html'
+  // var xhr = new XMLHttpRequest();
+  // xhr.open('GET','http://www.baidu.com',true);
+  // xhr.responseType = 'txt';
 
-// var xhr = new XMLHttpRequest();
-// xhr.open('GET','http://www.baidu.com',true);
-// xhr.responseType = 'txt';
+  // xhr.onload = function() {
+  //   console.log(xhr.response);
+  // };
 
-// xhr.onload = function() {
-//   console.log(xhr.response);
-// };
+  // xhr.onerror = function() {
+  //   console.log("Oops, error");
+  // };
 
-// xhr.onerror = function() {
-//   console.log("Oops, error");
-// };
-
-xhr.send();
+  xhr.send();
 
 </script>
 
