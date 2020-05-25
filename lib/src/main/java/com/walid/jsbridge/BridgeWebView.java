@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,7 +119,9 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     void handleJsMessageData(String url) {
         String functionName = BridgeUtil.getFunctionFromReturnUrl(url);
+        BridgeUtil.log(this, functionName);
         IDispatchCallBack f = dispatchCallbacks.get(functionName);
+        BridgeUtil.log(this, "dispatchCallbacks function = " + (f == null));
         String data = BridgeUtil.getDataFromReturnUrl(url);
         if (f != null) {
             f.onCallBack(new JSCallData(0, "ok", data));
@@ -157,11 +160,13 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     void queryJsMessageQueue() {
         if (Thread.currentThread() != Looper.getMainLooper().getThread()) return;
-        this.evaluateJavascript(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, null);
+        BridgeUtil.log(this, "queryJsMessageQueue");
         dispatchCallbacks.put(BridgeUtil.parseFunctionName(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA), callData -> {
             // deserializeMessage
             List<Message> messageList = Message.toMessageList(callData.getData());
+            BridgeUtil.log(this, "JSDispatch Message size:" + messageList.size());
             for (Message m : messageList) {
+                BridgeUtil.log(this, "JSDispatch Message:" + m.getCallbackId());
                 String responseId = m.getResponseId();
                 if (!TextUtils.isEmpty(responseId)) {
                     // dispatch callback
@@ -203,6 +208,7 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
                 }
             }
         });
+        this.evaluateJavascript(BridgeUtil.JS_FETCH_QUEUE_FROM_JAVA, null);
     }
 
     @Override
@@ -218,6 +224,23 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
     }
 
     private class InnerJavascriptInterface {
+        @JavascriptInterface
+        public void handleJs(String argStr) {
+            try {
+                argStr = URLDecoder.decode(argStr, "UTF-8");
+            } catch (UnsupportedEncodingException ignored) {
+            }
+            String finalArgStr = argStr;
+            post(() -> {
+                // if return data
+                if (finalArgStr.startsWith(BridgeUtil.YY_RETURN_DATA)) {
+                    handleJsMessageData(finalArgStr);
+                } else if (finalArgStr.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) {
+                    queryJsMessageQueue();
+                }
+            });
+        }
+
         @JavascriptInterface
         public String dispatchSync(String handlerName, String argStr) {
             JSONObject jsonObject = new JSONObject();

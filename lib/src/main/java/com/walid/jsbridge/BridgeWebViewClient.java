@@ -35,7 +35,7 @@ public class BridgeWebViewClient extends WebViewClient {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
+        BridgeUtil.log(webView, "shouldOverrideUrlLoading:" + url);
         // if return data
         if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) {
             webView.handleJsMessageData(url);
@@ -96,11 +96,11 @@ public class BridgeWebViewClient extends WebViewClient {
                 "      eventCallbacks[req.handlerName] = [];\n" +
                 "    }\n" +
                 "    eventCallbacks[req.handlerName].push(req.exec);\n" +
-                "    if(req.callback) {\n" +
-                "        req.callback({\n" +
-                "          msg: 'add success ~',\n" +
-                "          code: 0\n" +
-                "        });\n" +
+                "    if (req.callback) {\n" +
+                "      req.callback({\n" +
+                "        msg: 'add success ~',\n" +
+                "        code: 0\n" +
+                "      });\n" +
                 "    }\n" +
                 "  }\n" +
                 "\n" +
@@ -123,11 +123,11 @@ public class BridgeWebViewClient extends WebViewClient {
                 "        break;\n" +
                 "      }\n" +
                 "    }\n" +
-                "    if(req.callback) {\n" +
-                "        req.callback({\n" +
-                "          msg: delSuccess ? 'delete success ~' : 'delete failed ~',\n" +
-                "          code: delSuccess ? 0 : -1\n" +
-                "        });\n" +
+                "    if (req.callback) {\n" +
+                "      req.callback({\n" +
+                "        msg: delSuccess ? 'delete success ~' : 'delete failed ~',\n" +
+                "        code: delSuccess ? 0 : -1\n" +
+                "      });\n" +
                 "    }\n" +
                 "  }\n" +
                 "\n" +
@@ -142,13 +142,21 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    if (!req || !req.handlerName) {\n" +
                 "      return;\n" +
                 "    }\n" +
+                "\n" +
+                "    if (!req.callback) {\n" +
+                "      // TODO 增加默认数据\n" +
+                "      req.callback = function (respData) {\n" +
+                "      }\n" +
+                "    }\n" +
                 "    if (req.callback) {\n" +
                 "      var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();\n" +
                 "      dispatchCallbacks[callbackId] = req.callback;\n" +
                 "      req.callbackId = callbackId;\n" +
                 "    }\n" +
                 "    untreatedDispatchMsgs.push(req);\n" +
-                "    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;\n" +
+                "    console.log(AEJSBridgeSync);\n" +
+                "    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE);\n" +
+                "//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;\n" +
                 "  }\n" +
                 "\n" +
                 "  /**\n" +
@@ -176,7 +184,8 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    console.log(\"_fetchQueue：\" + messageQueueString);\n" +
                 "    untreatedDispatchMsgs = [];\n" +
                 "    // android can't read directly the return data, so we can reload iframe src to communicate with java\n" +
-                "    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);\n" +
+                "    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString));\n" +
+                "//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);\n" +
                 "  }\n" +
                 "\n" +
                 "  /**\n" +
@@ -197,7 +206,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "    setTimeout(function () {\n" +
                 "      var msg = JSON.parse(messageJSON);\n" +
                 "      var responseCallback;\n" +
-                "      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(data) : data;\n" +
+                "      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(msg.data) : msg.data;\n" +
                 "      var data;\n" +
                 "      try {\n" +
                 "        data = JSON.parse(msg.data);\n" +
@@ -209,8 +218,10 @@ public class BridgeWebViewClient extends WebViewClient {
                 "      if (msg.responseId) {\n" +
                 "        responseCallback = dispatchCallbacks[msg.responseId];\n" +
                 "        if (!responseCallback) {\n" +
+                "          console.log('responseCallback is empty~');\n" +
                 "          return;\n" +
                 "        }\n" +
+                "        console.log('responseCallback responseId:' + msg.responseId);\n" +
                 "        responseCallback({\n" +
                 "          data: data,\n" +
                 "          msg: msg.msg,\n" +

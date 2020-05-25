@@ -37,11 +37,11 @@
       eventCallbacks[req.handlerName] = [];
     }
     eventCallbacks[req.handlerName].push(req.exec);
-    if(req.callback) {
-        req.callback({
-          msg: 'add success ~',
-          code: 0
-        });
+    if (req.callback) {
+      req.callback({
+        msg: 'add success ~',
+        code: 0
+      });
     }
   }
 
@@ -64,11 +64,11 @@
         break;
       }
     }
-    if(req.callback) {
-        req.callback({
-          msg: delSuccess ? 'delete success ~' : 'delete failed ~',
-          code: delSuccess ? 0 : -1
-        });
+    if (req.callback) {
+      req.callback({
+        msg: delSuccess ? 'delete success ~' : 'delete failed ~',
+        code: delSuccess ? 0 : -1
+      });
     }
   }
 
@@ -83,13 +83,21 @@
     if (!req || !req.handlerName) {
       return;
     }
+
+    if (!req.callback) {
+      // TODO 增加默认数据
+      req.callback = function (respData) {
+      }
+    }
     if (req.callback) {
       var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();
       dispatchCallbacks[callbackId] = req.callback;
       req.callbackId = callbackId;
     }
     untreatedDispatchMsgs.push(req);
-    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
+    console.log(AEJSBridgeSync);
+    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE);
+//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
   }
 
   /**
@@ -117,7 +125,8 @@
     console.log("_fetchQueue：" + messageQueueString);
     untreatedDispatchMsgs = [];
     // android can't read directly the return data, so we can reload iframe src to communicate with java
-    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);
+    AEJSBridgeSync.handleJs(CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString));
+//    bridgeIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);
   }
 
   /**
@@ -138,7 +147,7 @@
     setTimeout(function () {
       var msg = JSON.parse(messageJSON);
       var responseCallback;
-      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(data) : data;
+      msg.data = (typeof msg.data == 'string') ? decodeURIComponent(msg.data) : msg.data;
       var data;
       try {
         data = JSON.parse(msg.data);
@@ -150,8 +159,10 @@
       if (msg.responseId) {
         responseCallback = dispatchCallbacks[msg.responseId];
         if (!responseCallback) {
+          console.log('responseCallback is empty~');
           return;
         }
+        console.log('responseCallback responseId:' + msg.responseId);
         responseCallback({
           data: data,
           msg: msg.msg,

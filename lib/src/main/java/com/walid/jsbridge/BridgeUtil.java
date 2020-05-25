@@ -55,10 +55,15 @@ public class BridgeUtil {
         return null;
     }
 
+    static void log(WebView webView, String log) {
+        webView.evaluateJavascript("javascript:console.log(\"" + log + "\")", null);
+    }
+
     /**
      * js script
+     *
      * @param view WebView
-     * @param url url path
+     * @param url  url path
      */
     public static void webViewLoadJs(WebView view, String url) {
         String js = "var newscript = document.createElement(\"script\");";
