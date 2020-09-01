@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
-//        button.setOnClickListener(v -> {
-//            webView.loadUrl("http://172.29.23.164:7456");
-//        });
-
         BridgeModuleManager.registerModule(webView, new TestModule());
 
 //        String scbs = "";
@@ -92,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 //        webView.loadUrl("https://www.baidu.com");
 
         webView.loadUrl("file:///android_asset/demo.html");
+//        webView.loadUrl("https://tencentx5.github.io/x5/video_page_samelayer.htm");
 
 //        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
 //        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
