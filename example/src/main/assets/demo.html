@@ -32,12 +32,13 @@
   }
 
   var func = function (res, callback) {
+    document.getElementById("show").innerHTML = "params from Java: = " + JSON.stringify(res);
+    if(typeof callback != 'function') return;
     callback({
       code: 0,
       data: '1234567890',
       msg: '请求成功~'
     })
-    document.getElementById("show").innerHTML = "params from Java: = " + JSON.stringify(res);
   }
 
   function addEvent() {
@@ -150,7 +151,7 @@
   //   console.log("Oops, error");
   // };
 
-  xhr.send();
+  // xhr.send();
 
 
 </script>

@@ -37,7 +37,7 @@
       eventCallbacks[req.handlerName] = [];
     }
     eventCallbacks[req.handlerName].push(req.exec);
-    if (req.callback) {
+    if (req.callback && typeof req.callback == 'function') {
       req.callback({
         msg: 'add success ~',
         code: 0
@@ -64,7 +64,7 @@
         break;
       }
     }
-    if (req.callback) {
+    if (req.callback && typeof req.callback == 'function') {
       req.callback({
         msg: delSuccess ? 'delete success ~' : 'delete failed ~',
         code: delSuccess ? 0 : -1
@@ -191,19 +191,23 @@
         }
         callbacks = eventCallbacks[msg.handlerName];
         if (!callbacks) {
-          responseCallback({
-            msg: "事件暂未注册~",
-            code: "-1"
-          });
           console.log("handlerName callbacks is empty ...");
+          if (responseCallback && typeof responseCallback == 'function') {
+            responseCallback({
+              msg: "事件暂未注册~",
+              code: "-1"
+            });
+          }
           return;
         }
         callbacks.forEach(function (item) {
-          item({
-            data: data,
-            msg: msg.msg,
-            code: msg.code
-          }, responseCallback);
+          if (item && typeof item == 'function') {
+            item({
+              data: data,
+              msg: msg.msg,
+              code: msg.code
+            }, responseCallback);
+          }
         })
       }
     });

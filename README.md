@@ -12,6 +12,17 @@ Android and JS communication~
 	}
 ```
 
+## 混淆配置
+
+```
+-keepattributes JavascriptInterface
+-keep public class com.walid.jsbridge.BridgeWebView$InnerJavascriptInterface
+-keep public class * implements com.walid.jsbridge.BridgeWebView$InnerJavascriptInterface
+-keepclassmembers class com.walid.jsbridge.BridgeWebView$InnerJavascriptInterface { 
+    <methods>; 
+}
+```
+
 ## USE in Java
 
 ## dispatch

@@ -96,7 +96,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "      eventCallbacks[req.handlerName] = [];\n" +
                 "    }\n" +
                 "    eventCallbacks[req.handlerName].push(req.exec);\n" +
-                "    if (req.callback) {\n" +
+                "    if (req.callback && typeof req.callback == 'function') {\n" +
                 "      req.callback({\n" +
                 "        msg: 'add success ~',\n" +
                 "        code: 0\n" +
@@ -123,7 +123,7 @@ public class BridgeWebViewClient extends WebViewClient {
                 "        break;\n" +
                 "      }\n" +
                 "    }\n" +
-                "    if (req.callback) {\n" +
+                "    if (req.callback && typeof req.callback == 'function') {\n" +
                 "      req.callback({\n" +
                 "        msg: delSuccess ? 'delete success ~' : 'delete failed ~',\n" +
                 "        code: delSuccess ? 0 : -1\n" +
@@ -250,19 +250,23 @@ public class BridgeWebViewClient extends WebViewClient {
                 "        }\n" +
                 "        callbacks = eventCallbacks[msg.handlerName];\n" +
                 "        if (!callbacks) {\n" +
-                "          responseCallback({\n" +
-                "            msg: \"事件暂未注册~\",\n" +
-                "            code: \"-1\"\n" +
-                "          });\n" +
                 "          console.log(\"handlerName callbacks is empty ...\");\n" +
+                "          if (responseCallback && typeof responseCallback == 'function') {\n" +
+                "            responseCallback({\n" +
+                "              msg: \"事件暂未注册~\",\n" +
+                "              code: \"-1\"\n" +
+                "            });\n" +
+                "          }\n" +
                 "          return;\n" +
                 "        }\n" +
                 "        callbacks.forEach(function (item) {\n" +
-                "          item({\n" +
-                "            data: data,\n" +
-                "            msg: msg.msg,\n" +
-                "            code: msg.code\n" +
-                "          }, responseCallback);\n" +
+                "          if (item && typeof item == 'function') {\n" +
+                "            item({\n" +
+                "              data: data,\n" +
+                "              msg: msg.msg,\n" +
+                "              code: msg.code\n" +
+                "            }, responseCallback);\n" +
+                "          }\n" +
                 "        })\n" +
                 "      }\n" +
                 "    });\n" +
