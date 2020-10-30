@@ -1,12 +1,16 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
+def isGoogle() {
+    return project.hasProperty("uploadTask") && project.property("uploadTask") == 'google'
+}
+
 // jcenter 上传配置
 publish {
-    artifactId = 'jsbridge'
+    artifactId = isGoogle() ? 'jsbridge-google' : 'jsbridge'
     userOrg = 'walid1992'
     groupId = 'com.walid'
-    publishVersion = "1.1.5.beta7"
+    publishVersion = "1.1.6.beta5"
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
 }
@@ -33,8 +37,18 @@ android {
     }
 }
 
+// 动态添加依赖
+afterEvaluate {
+    if (isGoogle()) {
+        println 'google'
+        this.dependencies.add("api", 'cn.soulapp.android:tbssdk:43939')
+    } else {
+        println 'china'
+        this.dependencies.add("api", 'com.tencent.tbs.tbssdk:sdk:43939')
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.google.code.gson:gson:2.8.5'
-    api 'com.tencent.tbs.tbssdk:sdk:43939'
 }

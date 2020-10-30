@@ -18,6 +18,9 @@ allprojects {
         maven {
             url 'https://dl.bintray.com/novoda-oss/snapshots/'
         }
+        maven {
+            url 'http://maven.soulapp-inc.cn/repository/maven-releases/'
+        }
     }
 //    tasks.withType(Javadoc) {
 //        options {
