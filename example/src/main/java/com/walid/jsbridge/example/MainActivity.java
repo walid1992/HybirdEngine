@@ -1,6 +1,7 @@
 package com.walid.jsbridge.example;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.walid.jsbridge.BridgeWebView;
 import com.walid.jsbridge.BridgeWebViewClient;
+import com.walid.jsbridge.SMinaEngine;
 import com.walid.jsbridge.factory.BridgeModuleManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         ws.setAllowUniversalAccessFromFileURLs(true);
         BridgeModuleManager.registerModule(webView, new PlanetModule());
         BridgeModuleManager.registerModule(webView, new RouterModule());
+
+        Log.e("TAG", SMinaEngine.getArtifactId());
         webView.setWebViewClient(new BridgeWebViewClient(webView) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

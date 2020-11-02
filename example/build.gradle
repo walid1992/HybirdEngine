@@ -17,6 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "tier"
+    productFlavors {
+        fSuper {
+            dimension "tier"
+            buildConfigField "String", "APP_ID", "\"10000003\""
+        }
+
+        fGoogle {
+            dimension "tier"
+            buildConfigField "String", "APP_ID", "\"10000003\""
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

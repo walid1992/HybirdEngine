@@ -1,3 +1,6 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
@@ -10,7 +13,7 @@ publish {
     artifactId = isGoogle() ? 'jsbridge-google' : 'jsbridge'
     userOrg = 'walid1992'
     groupId = 'com.walid'
-    publishVersion = "1.1.6.beta5"
+    publishVersion = VERSION
     desc = "android js bridge lib ~"
     website = 'https://github.com/walid1992/AndroidJSBridge'
 }
@@ -23,11 +26,17 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName version
+        versionName VERSION
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "String", "artifactId", "\"${publish.artifactId}\""
+        }
+
         release {
             minifyEnabled false
+            buildConfigField "String", "artifactId", "\"${publish.artifactId}\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,8 +46,28 @@ android {
     }
 }
 
+def getCurrentFlavor() {
+    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+    println tskReqStr
+    Pattern pattern;
+    if (tskReqStr.contains("assemble"))
+        pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
+    else
+        pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
+
+    Matcher matcher = pattern.matcher(tskReqStr)
+    if (matcher.find())
+        return matcher.group(1).toLowerCase()
+    else {
+        println "NO MATCH FOUND"
+        return "";
+    }
+}
+
 // 动态添加依赖
 afterEvaluate {
+    println getCurrentFlavor()
     if (isGoogle()) {
         println 'google'
         this.dependencies.add("api", 'cn.soulapp.android:tbssdk:43939')
