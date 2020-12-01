@@ -80,4 +80,5 @@ afterEvaluate {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.google.code.gson:gson:2.8.5'
+    implementation project(path: ':webviewperformancemonitor')
 }

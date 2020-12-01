@@ -2,7 +2,11 @@ package com.walid.jsbridge;
 
 import android.graphics.Bitmap;
 
+import com.tencent.smtt.export.external.interfaces.SslError;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
@@ -10,6 +14,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.soulapp.android.webviewperformancemonitor.IWebmonitor;
+import cn.soulapp.android.webviewperformancemonitor.Logger;
+import cn.soulapp.android.webviewperformancemonitor.WebViewMonitor;
 
 /**
  * Author : walid
@@ -19,9 +27,22 @@ import java.util.List;
 public class BridgeWebViewClient extends WebViewClient {
 
     private BridgeWebView webView;
+    private WebViewMonitor monitor;
+
 
     public BridgeWebViewClient(BridgeWebView webView) {
         this.webView = webView;
+        this.monitor = new WebViewMonitor(webView.getAndroidObject(), new IWebmonitor() {
+            @Override
+            public int getProgress() {
+                return webView.getProgress();
+            }
+
+            @Override
+            public String getUrl() {
+                return webView.getUrl();
+            }
+        });
     }
 
     @Override
@@ -52,6 +73,9 @@ public class BridgeWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+
+        // TODO 统计监控
+        monitor.setupWebLoadTimeout();
     }
 
     @Override
@@ -302,11 +326,43 @@ public class BridgeWebViewClient extends WebViewClient {
             webView.dispatchMessage(m);
         }
 
+
+        // TODO 统计监控
+        // 可能会在进度<100或==100的情况下出现多次onPageFinished回调
+        if (view.getProgress() == 100 && !monitor.isWebLoadFinished.get()) {
+            Logger.d("注入js脚本");
+            //可能会回调多次
+            monitor.isWebLoadFinished.set(true);
+            String format = "javascript:%s.sendResource(JSON.stringify(window.performance.timing));";
+            String injectJs = String.format(format, "ANDROID_OBJECT_NAME");
+            view.loadUrl(injectJs);
+            monitor.setupJsInjectTimeout();
+        }
+
+    }
+
+    @Override
+    public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, SslError sslError) {
+        super.onReceivedSslError(webView, sslErrorHandler, sslError);
+        monitor.handleError("onReceivedHttpError");
+    }
+
+    @Override
+    public void onReceivedHttpError(WebView webView, WebResourceRequest webResourceRequest, WebResourceResponse webResourceResponse) {
+        super.onReceivedHttpError(webView, webResourceRequest, webResourceResponse);
+        monitor.handleError("onReceivedSslError");
+    }
+
+    @Override
+    public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
+        super.onReceivedError(webView, webResourceRequest, webResourceError);
+        monitor.handleError(String.valueOf(webResourceError.getDescription()));
     }
 
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
+        monitor.handleError(description);
     }
 
 }

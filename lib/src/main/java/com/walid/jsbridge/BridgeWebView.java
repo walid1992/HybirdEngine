@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.soulapp.android.webviewperformancemonitor.AndroidObject;
+import cn.soulapp.android.webviewperformancemonitor.Logger;
+
 /**
  * Author : walid
  * Data : 2017-06-01  15:05
@@ -85,6 +88,26 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
 
     public BridgeWebViewClient genBridgeWebViewClient() {
         return new BridgeWebViewClient(this);
+    }
+
+    private AndroidObject androidObject = null;
+
+    public AndroidObject getAndroidObject() {
+        if (androidObject == null) {
+            this.androidObject = new AndroidObject() {
+                @Override
+                public void handleError(String msg) {
+                    Logger.d("AndroidObject,错误信息:" + msg);
+                }
+
+                @Override
+                public void handleResource(String jsonStr) {
+                    Logger.d("AndroidObject,Timing信息:" + jsonStr);
+                }
+            };
+            super.addJavascriptInterface(androidObject, "ANDROID_OBJECT_NAME");
+        }
+        return this.androidObject;
     }
 
     /**

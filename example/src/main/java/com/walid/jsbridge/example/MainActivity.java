@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
 //        webView.loadUrl("https://www.baidu.com");
 
-        webView.loadUrl("file:///android_asset/demo.html");
-//        webView.loadUrl("https://tencentx5.github.io/x5/video_page_samelayer.htm");
+//        webView.loadUrl("file:///android_asset/demo.html");
+        webView.loadUrl("https://www.baidu.com");
 
 //        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
 //        webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
