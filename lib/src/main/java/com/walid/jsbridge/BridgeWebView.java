@@ -12,7 +12,10 @@ import android.webkit.JavascriptInterface;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
+import com.walid.cachewebviewlib.WebViewCacheInterceptorInst;
 import com.walid.jsbridge.factory.BridgeModuleManager;
 import com.walid.jsbridge.factory.JSCallData;
 import com.walid.jsbridge.factory.TypeModuleFactory;
@@ -28,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.soulapp.android.webviewperformancemonitor.AndroidObject;
-import cn.soulapp.android.webviewperformancemonitor.Logger;
+import cn.walid.android.webviewperformancemonitor.AndroidObject;
+import cn.walid.android.webviewperformancemonitor.Logger;
 
 /**
  * Author : walid
@@ -69,21 +72,26 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
     }
 
     private void init() {
+        Context context = getContext();
         this.setVerticalScrollBarEnabled(false);
         this.setHorizontalScrollBarEnabled(false);
         this.getSettings().setJavaScriptEnabled(true);
 
         //localstorage  sj add 20170612
-        this.getSettings().setDomStorageEnabled(true);
-        this.getSettings().setAppCacheMaxSize(APP_CACHE_MAX_SIZE);
-        String appCachePath = getContext().getCacheDir().getAbsolutePath();
-        this.getSettings().setAppCachePath(appCachePath);
-        this.getSettings().setAllowFileAccess(true);
-        this.getSettings().setAppCacheEnabled(true);
+        WebSettings settings = this.getSettings();
+        settings.setDomStorageEnabled(true);
+//        settings.setAppCacheMaxSize(APP_CACHE_MAX_SIZE);
+//        String appCachePath = getContext().getCacheDir().getAbsolutePath();
+//        settings.setAppCachePath(appCachePath);
+//        settings.setAllowFileAccess(true);
+//        settings.setAppCacheEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
         this.setWebViewClient(genBridgeWebViewClient());
+        CookieSyncManager.createInstance(context);
+        CookieSyncManager.getInstance().sync();
     }
 
     public BridgeWebViewClient genBridgeWebViewClient() {
@@ -238,6 +246,8 @@ public class BridgeWebView extends WebView implements IWebViewJsBridge {
     public void loadUrl(String s) {
         addJavascriptInterface(new BridgeWebView.InnerJavascriptInterface(), "AEJSBridgeSync");
         super.loadUrl(s);
+        // TODO 缓存拦截器
+        WebViewCacheInterceptorInst.getInstance().loadUrl(s, getSettings().getUserAgentString());
     }
 
     @Override

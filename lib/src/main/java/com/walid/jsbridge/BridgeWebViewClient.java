@@ -9,15 +9,18 @@ import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+import com.walid.cachewebviewlib.WebViewCacheInterceptorInst;
+import com.walid.webview.cache.adapter.WebResourceRequestAdapter;
+import com.walid.webview.cache.adapter.WebResourceResponseAdapter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.soulapp.android.webviewperformancemonitor.IWebmonitor;
-import cn.soulapp.android.webviewperformancemonitor.Logger;
-import cn.soulapp.android.webviewperformancemonitor.WebViewMonitor;
+import cn.walid.android.webviewperformancemonitor.IWebmonitor;
+import cn.walid.android.webviewperformancemonitor.Logger;
+import cn.walid.android.webviewperformancemonitor.WebViewMonitor;
 
 /**
  * Author : walid
@@ -28,7 +31,6 @@ public class BridgeWebViewClient extends WebViewClient {
 
     private BridgeWebView webView;
     private WebViewMonitor monitor;
-
 
     public BridgeWebViewClient(BridgeWebView webView) {
         this.webView = webView;
@@ -68,6 +70,31 @@ public class BridgeWebViewClient extends WebViewClient {
         } else {
             return super.shouldOverrideUrlLoading(view, url);
         }
+    }
+
+//
+//    public void loadUrlLocalMethod(final WebView webView, final String url) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                webView.loadUrl(url);
+//            }
+//        });
+//    }
+
+    // 拦截网络请求
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView webView, String s) {
+        return WebResourceResponseAdapter.adapter(WebViewCacheInterceptorInst.getInstance().
+                interceptRequest(s));
+    }
+
+    // 拦截网络请求
+    @Override
+    public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+//        Logger.e(webResourceRequest.getUrl().toString());
+        return WebResourceResponseAdapter.adapter(WebViewCacheInterceptorInst.getInstance().
+                interceptRequest(WebResourceRequestAdapter.adapter(webResourceRequest)));
     }
 
     @Override
@@ -317,6 +344,8 @@ public class BridgeWebViewClient extends WebViewClient {
 
         // 删除旧的桥接加载库
 //        BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.LOCAL_JSFile);
+
+        Logger.d("注入js脚本");
 
         List<Message> messageList = webView.getStartupMsgs();
         webView.setStartupMsgs(null);
