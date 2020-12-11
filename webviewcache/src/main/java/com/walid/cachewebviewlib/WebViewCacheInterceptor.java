@@ -282,7 +282,6 @@ public class WebViewCacheInterceptor implements WebViewRequestInterceptor {
         }
         try {
 
-            url = "https://ipv6.test-ipv6.com/2001:470:1:18:0:0:0:115/";
             Request.Builder reqBuilder = new Request.Builder()
                     .url(url);
 
