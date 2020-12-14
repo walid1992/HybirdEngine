@@ -15,7 +15,7 @@ import okhttp3.Response;
  */
 class HttpCacheInterceptor implements Interceptor {
 
-    private int min15 = 60 * 15;
+    private int day30 = 3600 * 24 * 30;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -26,11 +26,18 @@ class HttpCacheInterceptor implements Interceptor {
             return originResponse;
         }
 
+        // text/html;charset=utf-8
+        int maxAge = day30;
+        String contentType = originResponse.header("Content-Type");
+        if (TextUtils.isEmpty(contentType) || "text/html".equals(contentType.split(";")[0])) {
+            maxAge = day30;
+        }
+
         CacheControl cacheControl = originResponse.cacheControl();
         int maxAgeSeconds = cacheControl.maxAgeSeconds();
-        if (maxAgeSeconds <= min15) {
+        if (maxAgeSeconds <= maxAge) {
             cacheControl = new CacheControl.Builder()
-                    .maxAge(min15, TimeUnit.SECONDS)
+                    .maxAge(maxAge, TimeUnit.SECONDS)
                     .build();
         }
 

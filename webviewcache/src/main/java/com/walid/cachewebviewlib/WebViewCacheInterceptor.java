@@ -279,6 +279,7 @@ public class WebViewCacheInterceptor implements WebViewRequestInterceptor {
                 return new WebResourceResponse(mimeType, "", inputStream);
             }
         }
+
         try {
 
             Request.Builder reqBuilder = new Request.Builder()

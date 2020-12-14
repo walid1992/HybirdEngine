@@ -345,8 +345,6 @@ public class BridgeWebViewClient extends WebViewClient {
         // 删除旧的桥接加载库
 //        BridgeUtil.webViewLoadLocalJs(view, BridgeWebView.LOCAL_JSFile);
 
-        Logger.d("注入js脚本");
-
         List<Message> messageList = webView.getStartupMsgs();
         webView.setStartupMsgs(null);
         if (messageList == null || messageList.size() <= 0) return;
@@ -354,7 +352,6 @@ public class BridgeWebViewClient extends WebViewClient {
         for (Message m : copy) {
             webView.dispatchMessage(m);
         }
-
 
         // TODO 统计监控
         // 可能会在进度<100或==100的情况下出现多次onPageFinished回调
@@ -379,7 +376,7 @@ public class BridgeWebViewClient extends WebViewClient {
     @Override
     public void onReceivedHttpError(WebView webView, WebResourceRequest webResourceRequest, WebResourceResponse webResourceResponse) {
         super.onReceivedHttpError(webView, webResourceRequest, webResourceResponse);
-        monitor.handleError("onReceivedSslError");
+        monitor.handleError("onReceivedHttpError:" + webResourceResponse.getReasonPhrase());
     }
 
     @Override
