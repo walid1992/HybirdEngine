@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(v -> {
-            webView.loadUrl("https://www.baidu.com");
+            webView.loadUrl("http://172.29.82.26:9999/demo.html");
 //            webView.loadUrl("https://w3.soulsmile.cn/activity/#/voice?postIdEcpt=dGJ5eDVEc1dVdWhpZEErQUVyYitWQT09");
 //            webView.dispatch("action_page_onNavigationRightClick", "data from Java", null);
 //            webView.dispatch("action_page_onNavigationRightClick", "data from Java", callData -> {

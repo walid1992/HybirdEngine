@@ -276,8 +276,7 @@ public class WebViewCacheInterceptor implements WebViewRequestInterceptor {
             if (inputStream != null) {
                 CacheWebViewLog.d(String.format("from assets: %s", url), debug);
                 String mimeType = MimeTypeMapUtils.getMimeTypeFromUrl(url);
-                WebResourceResponse webResourceResponse = new WebResourceResponse(mimeType, "", inputStream);
-                return webResourceResponse;
+                return new WebResourceResponse(mimeType, "", inputStream);
             }
         }
         try {
