@@ -9,7 +9,7 @@ import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-import com.walid.cachewebviewlib.WebViewCacheInterceptorInst;
+import com.walid.cache.WebViewCacheInterceptorInst;
 import com.walid.webview.cache.adapter.WebResourceRequestAdapter;
 import com.walid.webview.cache.adapter.WebResourceResponseAdapter;
 
@@ -18,9 +18,9 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.walid.android.webviewperformancemonitor.IWebmonitor;
-import cn.walid.android.webviewperformancemonitor.Logger;
-import cn.walid.android.webviewperformancemonitor.WebViewMonitor;
+import com.walid.monitor.IWebmonitor;
+import com.walid.monitor.Logger;
+import com.walid.monitor.WebViewMonitor;
 
 /**
  * Author : walid

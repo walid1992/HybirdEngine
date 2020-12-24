@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
-import com.walid.cachewebviewlib.WebViewCacheInterceptorInst;
+import com.walid.cache.WebViewCacheInterceptorInst;
 import com.walid.jsbridge.factory.BridgeModuleManager;
 import com.walid.jsbridge.factory.JSCallData;
 import com.walid.jsbridge.factory.TypeModuleFactory;
@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.walid.android.webviewperformancemonitor.AndroidObject;
-import cn.walid.android.webviewperformancemonitor.Logger;
+import com.walid.monitor.AndroidObject;
+import com.walid.monitor.Logger;
 
 /**
  * Author : walid

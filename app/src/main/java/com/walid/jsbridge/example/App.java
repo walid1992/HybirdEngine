@@ -2,8 +2,8 @@ package com.walid.jsbridge.example;
 
 import android.app.Application;
 
-import com.walid.cachewebviewlib.WebViewCacheInterceptor;
-import com.walid.cachewebviewlib.WebViewCacheInterceptorInst;
+import com.walid.cache.WebViewCacheInterceptor;
+import com.walid.cache.WebViewCacheInterceptorInst;
 
 /**
  * Author   : walid
